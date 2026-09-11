@@ -1,7 +1,6 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import Carousel from '../../../components/Carousel.astro';
 import {
   locales,
   defaultLocale,
@@ -9,7 +8,7 @@ import {
   localePath,
   useTranslations,
   formatDate,
-  type Locale,
+  withBase,
 } from '../../../i18n';
 import { groupByTranslationKey, canonicalOf, localizedOf } from '../../../lib/content';
 
@@ -39,6 +38,7 @@ const lang = localeFromParam(Astro.params.lang);
 const t = useTranslations(lang);
 const { Content } = await render(memory);
 const images = memory.data.images;
+const [lead, ...rest] = images;
 
 // Meta description: primul rând de text, fără marcaje Markdown/HTML.
 const description =
@@ -57,36 +57,78 @@ const description =
   description={description}
   ogImage={images[0]?.src}
 >
-  <article class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-    <nav>
-      <a
-        href={localePath(lang, `/amintiri/#an${memory.data.year}`)}
-        class="text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
-      >
-        ← {t('memories.back')}
-      </a>
-    </nav>
+  <article>
+    <!-- Antetul articolului, pe coloană îngustă -->
+    <header class="border-b border-rule">
+      <div class="mx-auto max-w-[68ch] px-4 py-10 sm:py-14">
+        <nav>
+          <a
+            href={localePath(lang, `/amintiri/#an${memory.data.year}`)}
+            class="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-muted transition-colors hover:text-accent"
+          >
+            ← {t('memories.back')}
+          </a>
+        </nav>
 
-    <header class="mt-6">
-      <p class="text-sm font-semibold uppercase tracking-widest text-brand-600">
-        {t('memories.year')} {memory.data.year}
-      </p>
-      <h1 class="mt-2 font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{memory.data.title}</h1>
-      {
-        memory.data.date && memory.data.showDate && (
-          <p class="mt-2 text-stone-500">
-            <time datetime={memory.data.date.toISOString().slice(0, 10)}>
-              {formatDate(memory.data.date, lang)}
-            </time>
-          </p>
-        )
-      }
+        <p class="eyebrow mt-7">
+          {t('archive.eyebrowMemory')}
+          <span class="mx-2 text-rule" aria-hidden="true">·</span>
+          {memory.data.year}
+        </p>
+
+        <h1 class="mt-2 font-serif text-[2rem] font-bold leading-tight text-ink sm:text-[2.75rem]">
+          {memory.data.title}
+        </h1>
+
+        {
+          memory.data.date && memory.data.showDate && (
+            <p class="meta mt-3">
+              <time datetime={memory.data.date.toISOString().slice(0, 10)}>
+                {formatDate(memory.data.date, lang)}
+              </time>
+            </p>
+          )
+        }
+      </div>
     </header>
 
-    <div class="prose-md mt-8 text-stone-700">
+    <!-- Fotografia de deschidere, lată cât coloana de text -->
+    {
+      lead && (
+        <figure class="mx-auto max-w-[68ch] px-4 pt-10">
+          <img
+            src={withBase(lead.src)}
+            alt={lead.alt}
+            loading="eager"
+            decoding="async"
+            class="w-full rounded-sm object-cover"
+          />
+        </figure>
+      )
+    }
+
+    <div class="prose-j mx-auto mt-10 max-w-[62ch] px-4 text-ink">
       <Content />
     </div>
 
-    <Carousel images={images} lang={lang} class="mt-10" />
+    <!-- Restul fotografiilor, ca planșe -->
+    {
+      rest.length > 0 && (
+        <div class="mx-auto mt-14 max-w-[68ch] px-4 pb-16 sm:pb-20">
+          <div class="grid gap-4 sm:grid-cols-2">
+            {rest.map((img) => (
+              <img
+                src={withBase(img.src)}
+                alt={img.alt}
+                loading="lazy"
+                decoding="async"
+                class="aspect-[4/3] w-full rounded-sm object-cover"
+              />
+            ))}
+          </div>
+        </div>
+      )
+    }
+    {rest.length === 0 && <div class="pb-16 sm:pb-20"></div>}
   </article>
 </Base>

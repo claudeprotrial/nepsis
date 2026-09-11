@@ -155,6 +155,23 @@ const de: Partial<typeof ro> = {
   'notFound.title': 'Seite nicht gefunden',
   'notFound.text': 'Die gesuchte Seite existiert leider nicht (oder wurde verschoben).',
   'notFound.home': 'Zurück zur Startseite',
+
+  // v6 — jurnal: hero, rubrici, arhivă
+  'home.heroHeadline': 'Der Glaube wird gemeinsam bewahrt',
+  'home.heroLead': 'Wir kommen zusammen am Patrozinium und zur Vigil, in den Bergen und beim Bibelkreis — von Genf bis St. Gallen.',
+  'home.heroPhotoAlt': 'Die Jugendlichen von Nepsis Schweiz mit dem Bischof und den Priestern am Patrozinium der Bruderschaft',
+  'home.sectionUpcoming': 'Demnächst',
+  'home.sectionArchive': 'Aus dem Archiv',
+  'home.sectionAbout': 'Die Bruderschaft',
+  'home.sectionJoin': 'Komm auch du',
+  'home.joinText': 'Du musst vorher niemanden kennen und nichts Bestimmtes können. Schreib uns, und wir sehen uns beim nächsten Treffen.',
+  'home.joinCta': 'So wirst du Mitglied',
+  'footer.sections': 'Rubriken',
+  'archive.eyebrowMemory': 'Erinnerung',
+  'archive.eyebrowEvent': 'Veranstaltung',
+  'archive.allMemories': 'Alle Erinnerungen',
+  'archive.allEvents': 'Alle Veranstaltungen',
+  'archive.noPhotos': 'Ohne Fotografien',
 };
 
 export default de;

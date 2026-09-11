@@ -1,0 +1,96 @@
+---
+import { Image } from 'astro:assets';
+import { type Locale, useTranslations, localePath } from '../i18n';
+import ObfuscatedEmail from './ObfuscatedEmail.astro';
+import SocialLinks from './SocialLinks.astro';
+import logo from '../assets/logo-small.jpg';
+
+/**
+ * Colofonul: nu o bandă întunecată, ci ultima pagină a jurnalului — hârtie puțin
+ * mai închisă, linii subțiri, trei coloane de informații de serviciu.
+ */
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+
+const rubrici = [
+  { href: '/evenimente/', label: t('nav.activities') },
+  { href: '/amintiri/', label: t('nav.memories') },
+  { href: '/ocrotitorul/', label: t('nav.patron') },
+  { href: '/membri/', label: t('nav.members') },
+  { href: '/psaltica/', label: t('nav.psaltica') },
+  { href: '/devino-membru/', label: t('nav.join') },
+];
+---
+
+<footer class="border-t border-rule bg-paper-deep">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:grid-cols-2 sm:py-14 lg:grid-cols-3 lg:gap-14">
+    <!-- Identitatea -->
+    <div>
+      <a href={localePath(lang, '/')} class="flex items-center gap-3">
+        <Image
+          src={logo}
+          alt=""
+          width="112"
+          height="112"
+          format="webp"
+          loading="lazy"
+          class="h-12 w-12 rounded-full object-cover"
+        />
+        <span class="font-serif text-lg font-bold uppercase tracking-[0.1em] text-ink">
+          {t('site.name')}
+        </span>
+      </a>
+      <p class="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-muted">{t('footer.about')}</p>
+    </div>
+
+    <!-- Rubricile -->
+    <nav aria-label={t('nav.menu')}>
+      <p class="eyebrow">{t('footer.sections')}</p>
+      <ul class="mt-4 space-y-2.5">
+        {
+          rubrici.map((r) => (
+            <li>
+              <a
+                href={localePath(lang, r.href)}
+                class="font-serif text-[0.9375rem] text-ink decoration-rule underline-offset-4 hover:underline hover:decoration-accent"
+              >
+                {r.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <!-- Legătura -->
+    <div>
+      <p class="eyebrow">{t('footer.contact')}</p>
+      <p class="mt-4 text-[0.9375rem]">
+        <ObfuscatedEmail class="text-ink decoration-rule underline underline-offset-4 hover:decoration-accent" />
+      </p>
+      <p class="mt-2.5 text-[0.9375rem]">
+        <a
+          href={localePath(lang, '/newsletter/')}
+          class="text-ink decoration-rule underline underline-offset-4 hover:decoration-accent"
+        >
+          {t('contact.newsletterLink')}
+        </a>
+      </p>
+      <SocialLinks
+        showGroups={false}
+        class="mt-5 gap-2 [&_a]:text-muted [&_a:hover]:text-accent"
+      />
+    </div>
+  </div>
+
+  <div class="border-t border-rule">
+    <p class="mx-auto max-w-6xl px-4 py-4 text-center font-sans text-[0.6875rem] uppercase tracking-[0.1em] text-muted">
+      © {year} Nepsis Elveția — {t('footer.rights')}
+    </p>
+  </div>
+</footer>

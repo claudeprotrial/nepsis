@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
 import { langStaticPaths, localeFromParam, localePath, useTranslations, withBase, type UIKey } from '../../i18n';
 import { getMembers } from '../../lib/content';
 
@@ -13,29 +14,28 @@ const members = await getMembers();
 ---
 
 <Base lang={lang} title={`${t('members.title')} · ${t('site.name')}`} description={t('members.description')}>
-  <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
-    <header class="text-center">
-      <h1 class="font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{t('members.heading')}</h1>
-      <p class="mt-2 text-lg text-stone-600">{t('members.subtitle')}</p>
-    </header>
+  <PageHeader title={t('members.heading')} intro={t('members.subtitle')} />
 
-    <ul class="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+  <div class="mx-auto max-w-6xl px-4 py-14 sm:py-20">
+    <!--
+      Portrete dreptunghiulare, nu rotunde: un cerc taie umerii și transformă
+      oamenii în avataruri de aplicație. Formatul 4:5 e formatul unei fotografii.
+    -->
+    <ul class="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
       {
         members.map((member) => (
-          <li class="text-center">
+          <li>
             <img
               src={withBase(member.data.photo ?? '/img/membri/placeholder.png')}
               alt={member.data.photo ? member.data.name : t('members.missingPhoto')}
               loading="lazy"
-              width="240"
-              height="240"
-              class="mx-auto aspect-square w-36 rounded-full border border-stone-200 object-cover shadow-sm sm:w-44"
+              width="320"
+              height="400"
+              class="aspect-[4/5] w-full rounded-sm bg-paper-deep object-cover"
             />
-            <h2 class="mt-4 font-serif text-lg font-semibold text-brand-950">{member.data.name}</h2>
-            <p class="mt-0.5 text-sm font-medium text-brand-700">
-              {t(`members.role.${member.data.role}` as UIKey)}
-            </p>
-            <p class="text-sm text-stone-500">
+            <p class="eyebrow mt-3">{t(`members.role.${member.data.role}` as UIKey)}</p>
+            <h2 class="mt-1 font-serif text-lg font-bold leading-snug text-ink">{member.data.name}</h2>
+            <p class="meta mt-1">
               {t('members.parish')} {member.data.parish}
             </p>
           </li>
@@ -43,11 +43,11 @@ const members = await getMembers();
       }
     </ul>
 
-    <p class="mt-12 text-center text-stone-600">
+    <p class="mt-14 max-w-[60ch] text-[0.9375rem] leading-relaxed text-muted">
       {t('members.more')}
       <a
         href={localePath(lang, '/amintiri/')}
-        class="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+        class="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
       >
         {t('members.morePage')}</a
       >.

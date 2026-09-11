@@ -1,6 +1,16 @@
 @import 'tailwindcss';
 
 /*
+ * v6 — „Jurnalul frăției”.
+ *
+ * Site-ul e gândit ca un jurnal tipărit: Cardo peste tot (și la titluri, și în
+ * corpul textului), linii subțiri în loc de casete, supratitluri în majuscule
+ * mici, fotografii tratate ca planșe cu legendă. Roșul nu mai e structural ca
+ * în v4/v5 (benzi mari colorate), ci doar accent tipografic — exact cât să
+ * marcheze o rubrică.
+ */
+
+/*
  * Fonturi fallback cu metrici ajustate la Cardo/Inter (calculate cu fontkit,
  * media lățimilor a–z ponderată cu frecvențele literelor): până se încarcă
  * fontul web, textul are aceleași dimensiuni — deci zero salt de layout (CLS).
@@ -23,26 +33,25 @@
 }
 
 @theme {
-  /* Tipografie: Cardo (serif) pentru titluri, Inter pentru text — ambele cu diacritice românești (latin-ext). */
+  /*
+   * Cardo poartă tot conținutul redacțional. Inter rămâne doar pentru „mobilierul”
+   * paginii — navigație, date, legende, supratitluri —, unde literele mici cu
+   * spațiere largă cer un sans neutru.
+   */
   --font-serif: 'Cardo', 'Cardo Fallback', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter Variable', 'Inter', 'Inter Fallback', Arial, ui-sans-serif, system-ui, sans-serif;
 
-  /* Alb + roșu, ca stema Elveției — roșul elvețian (~#d52b1e) e singura culoare de accent. */
-  --color-brand-50: #fdf3f2;
-  --color-brand-100: #fce4e2;
-  --color-brand-200: #facdc9;
-  --color-brand-300: #f5a9a2;
-  --color-brand-400: #ed766b;
-  --color-brand-500: #e04b3c;
-  --color-brand-600: #d02d1e;
-  --color-brand-700: #ae2416;
-  --color-brand-800: #902115;
-  --color-brand-900: #772017;
-  --color-brand-950: #400c06;
+  /* Hârtie caldă de tipar, cerneală care nu e negru pur. */
+  --color-paper: #faf8f4;
+  --color-paper-deep: #f2eee6;
+  --color-ink: #1b1917;
+  --color-muted: #6d6660;
+  --color-rule: #ddd5c9;
+  --color-rule-strong: #1b1917;
 
-  /* Fond alb (abia perceptibil cald, ca să existe alternanță între secțiuni). */
-  --color-paper: #fbf8f7;
-  --color-ink: #2b2827;
+  /* Roșul rămâne din stema Elveției, dar coborât în saturație ca să suporte text mic. */
+  --color-accent: #a3231a;
+  --color-accent-soft: #f3e6e4;
 }
 
 html {
@@ -50,77 +59,129 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   background-color: var(--color-paper);
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Titlurile folosesc serif-ul peste tot. */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-serif);
   text-wrap: balance;
 }
 
-/* Stiluri implicite pentru proza venită din fișierele Markdown. */
-.prose-md {
-  @apply text-base leading-relaxed;
+/*
+ * Supratitlu de rubrică: majuscule mici, spațiate, roșii. Marchează categoria
+ * unui text („AMINTIRE”, „EVENIMENT”) fără să concureze cu titlul.
+ */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
 }
-.prose-md > * + * {
-  margin-top: 1em;
+
+/* Aceeași formă, dar neutră — pentru date și alte informații de serviciu. */
+.meta {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
 }
-.prose-md h2 {
-  @apply mt-10 mb-3 text-2xl font-semibold text-brand-900;
+
+/*
+ * Proza venită din Markdown. Cardo la 1.0625rem cu interlinie 1.7 — măsura unui
+ * text citit pe îndelete, nu a unei pagini de aplicație.
+ */
+.prose-j {
+  font-size: 1.0625rem;
+  line-height: 1.75;
 }
-.prose-md h3 {
-  @apply mt-8 mb-2 text-xl font-semibold text-brand-900;
+.prose-j > * + * {
+  margin-top: 1.1em;
 }
-.prose-md a {
-  @apply text-brand-700 underline decoration-brand-300 underline-offset-2 transition-colors;
-  overflow-wrap: anywhere;
+.prose-j h2 {
+  margin-top: 2.2em;
+  margin-bottom: 0.5em;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
-.prose-md a:hover {
-  @apply text-brand-900 decoration-brand-700;
+.prose-j h3 {
+  margin-top: 1.8em;
+  margin-bottom: 0.4em;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
-.prose-md ul {
-  @apply list-disc pl-6 space-y-1;
+.prose-j a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--color-accent) 35%, transparent);
+  text-underline-offset: 0.15em;
+  transition: text-decoration-color 150ms;
 }
-.prose-md ol {
-  @apply list-decimal pl-6 space-y-1;
+.prose-j a:hover {
+  text-decoration-color: var(--color-accent);
 }
-.prose-md blockquote {
-  @apply border-l-4 border-brand-200 pl-4 italic text-stone-600;
+.prose-j blockquote {
+  margin-block: 1.6em;
+  border-left: 2px solid var(--color-accent);
+  padding-left: 1.2em;
+  font-style: italic;
+  color: var(--color-muted);
 }
-.prose-md img {
-  @apply rounded-lg;
-  max-width: 100%;
-  height: auto;
+.prose-j ul,
+.prose-j ol {
+  padding-left: 1.3em;
 }
-.prose-md iframe {
-  max-width: 100%;
+.prose-j ul {
+  list-style: disc;
 }
-.prose-md table {
-  @apply w-full text-left text-sm;
+.prose-j ol {
+  list-style: decimal;
+}
+.prose-j li + li {
+  margin-top: 0.4em;
+}
+.prose-j img {
+  border-radius: 2px;
+}
+.prose-j table {
+  width: 100%;
   border-collapse: collapse;
+  font-size: 0.9375rem;
 }
-.prose-md th {
-  @apply border-b-2 border-brand-200 py-2 pr-4 font-semibold text-brand-900;
+.prose-j th,
+.prose-j td {
+  border-bottom: 1px solid var(--color-rule);
+  padding: 0.6em 0.4em;
+  text-align: left;
+  vertical-align: top;
 }
-.prose-md td {
-  @apply border-b border-stone-200 py-2 pr-4 align-top;
-}
-.prose-md strong {
-  @apply font-semibold;
+.prose-j th {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-/* Tabelele late din Markdown derulează orizontal pe mobil în loc să rupă pagina. */
-.prose-md .table-scroll,
-.prose-md > astro-island {
-  overflow-x: auto;
+/* Fotografiile nu au voie să depășească niciodată coloana. */
+img {
+  max-width: 100%;
 }
 
-/* E-mailul nu apare în HTML: e asamblat vizual din atributele data-* (anti-spam). */
+/*
+ * Adresa de e-mail se compune din atributele data-* abia la randare, ca să nu
+ * apară nicăieri în HTML în clar (anti-spam). Perechea acestei reguli e
+ * ascultătorul de click din Base.astro, care asamblează „mailto:”.
+ */
 .email-protejat::after {
   content: attr(data-x) '@' attr(data-y) '.' attr(data-z);
 }

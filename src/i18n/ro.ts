@@ -151,4 +151,21 @@ export default {
   'notFound.title': 'Pagina nu a fost găsită',
   'notFound.text': 'Ne pare rău, pagina căutată nu există (sau a fost mutată).',
   'notFound.home': 'Înapoi la pagina principală',
+
+  // v6 — jurnal: hero, rubrici, arhivă
+  'home.heroHeadline': 'Credința se ține împreună',
+  'home.heroLead': 'Ne adunăm la hram și la priveghere, pe munte și la studiu biblic — de la Geneva la St. Gallen.',
+  'home.heroPhotoAlt': 'Tinerii Nepsis Elveția împreună cu ierarhul și preoții, la hramul frăției',
+  'home.sectionUpcoming': 'Urmează',
+  'home.sectionArchive': 'Din arhivă',
+  'home.sectionAbout': 'Despre frăție',
+  'home.sectionJoin': 'Vino și tu',
+  'home.joinText': 'Nu trebuie să cunoști pe nimeni dinainte și nu trebuie să te pricepi la nimic anume. Scrie-ne și te așteptăm la următoarea întâlnire.',
+  'home.joinCta': 'Cum devii membru',
+  'footer.sections': 'Rubrici',
+  'archive.eyebrowMemory': 'Amintire',
+  'archive.eyebrowEvent': 'Eveniment',
+  'archive.allMemories': 'Toate amintirile',
+  'archive.allEvents': 'Toate evenimentele',
+  'archive.noPhotos': 'Fără fotografii',
 } as const;

@@ -1,0 +1,63 @@
+---
+import { withBase } from '../i18n';
+
+/**
+ * Rândul de arhivă: supratitlu de rubrică, titlu serif, rezumat și informații de
+ * serviciu în stânga; o miniatură pătrată în dreapta. Rândurile se despart prin
+ * linii subțiri trasate de containerul părinte (`divide-y divide-rule`), nu prin
+ * casete — așa lista se citește ca un cuprins, nu ca un raft de cartonașe.
+ *
+ * Miniatura e opțională: o intrare fără fotografie păstrează aceeași grilă, doar
+ * că textul ocupă toată lățimea.
+ */
+interface Props {
+  title: string;
+  href: string;
+  eyebrow?: string;
+  dek?: string;
+  meta?: string;
+  image?: string;
+  imageAlt?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const {
+  title,
+  href,
+  eyebrow,
+  dek,
+  meta,
+  image,
+  imageAlt = '',
+  headingLevel: Heading = 'h3',
+} = Astro.props;
+---
+
+<article class="group py-6 sm:py-7">
+  <div class="flex items-start justify-between gap-5 sm:gap-8">
+    <div class="min-w-0 flex-1">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <Heading class:list={['font-serif text-xl font-bold leading-snug text-ink sm:text-2xl', eyebrow && 'mt-1.5']}>
+        <a href={href} class="decoration-accent/40 underline-offset-4 group-hover:underline">
+          {title}
+        </a>
+      </Heading>
+      {dek && <p class="mt-2 line-clamp-2 text-[0.9375rem] leading-relaxed text-muted sm:line-clamp-3">{dek}</p>}
+      {meta && <p class="meta mt-2.5">{meta}</p>}
+    </div>
+
+    {
+      image && (
+        <a href={href} class="shrink-0" tabindex="-1" aria-hidden="true">
+          <img
+            src={withBase(image)}
+            alt={imageAlt}
+            loading="lazy"
+            decoding="async"
+            class="h-20 w-20 rounded-sm object-cover sm:h-28 sm:w-28"
+          />
+        </a>
+      )
+    }
+  </div>
+</article>

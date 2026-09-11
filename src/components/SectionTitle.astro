@@ -1,0 +1,31 @@
+---
+/**
+ * Titlu de rubrică așezat peste o linie care traversează toată lățimea —
+ * dispozitivul clasic de revistă. Fundalul titlului trebuie să fie identic cu
+ * al secțiunii, ca linia să pară întreruptă de literă, nu acoperită de o casetă.
+ */
+interface Props {
+  /** Nivelul real din ierarhia paginii; vizual arată la fel oricare ar fi. */
+  as?: 'h2' | 'h3';
+  id?: string;
+  /** Culoarea fundalului secțiunii, ca decupajul din linie să fie invizibil. */
+  bg?: 'paper' | 'paper-deep';
+  class?: string;
+}
+
+const { as: Tag = 'h2', id, bg = 'paper', class: extra = '' } = Astro.props;
+const bgClass = bg === 'paper-deep' ? 'bg-paper-deep' : 'bg-paper';
+---
+
+<div class:list={['relative text-center', extra]}>
+  <span class="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-rule" aria-hidden="true"></span>
+  <Tag
+    id={id}
+    class:list={[
+      'relative inline-block px-4 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.18em] text-ink',
+      bgClass,
+    ]}
+  >
+    <slot />
+  </Tag>
+</div>

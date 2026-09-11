@@ -155,6 +155,23 @@ const fr: Partial<typeof ro> = {
   'notFound.title': 'Page introuvable',
   'notFound.text': 'Désolé, la page recherchée n’existe pas (ou a été déplacée).',
   'notFound.home': 'Retour à la page d’accueil',
+
+  // v6 — jurnal: hero, rubrici, arhivă
+  'home.heroHeadline': 'La foi se garde ensemble',
+  'home.heroLead': 'Nous nous réunissons à la fête patronale et aux vigiles, en montagne et à l\'étude biblique — de Genève à Saint-Gall.',
+  'home.heroPhotoAlt': 'Les jeunes de Nepsis Suisse avec l\'évêque et les prêtres, lors de la fête patronale',
+  'home.sectionUpcoming': 'À venir',
+  'home.sectionArchive': 'Des archives',
+  'home.sectionAbout': 'La fraternité',
+  'home.sectionJoin': 'Rejoignez-nous',
+  'home.joinText': 'Pas besoin de connaître quelqu\'un à l\'avance, ni d\'avoir une compétence particulière. Écrivez-nous et nous vous attendons à la prochaine rencontre.',
+  'home.joinCta': 'Comment devenir membre',
+  'footer.sections': 'Rubriques',
+  'archive.eyebrowMemory': 'Souvenir',
+  'archive.eyebrowEvent': 'Événement',
+  'archive.allMemories': 'Tous les souvenirs',
+  'archive.allEvents': 'Tous les événements',
+  'archive.noPhotos': 'Sans photographies',
 };
 
 export default fr;

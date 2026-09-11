@@ -1,0 +1,25 @@
+---
+/**
+ * Antetul unei pagini interioare: supratitlu opțional, titlu serif mare și un
+ * text introductiv scurt, închise de o linie. Aceeași formă pe toate paginile,
+ * ca trecerea de la o rubrică la alta să nu schimbe regulile jocului.
+ */
+interface Props {
+  title: string;
+  eyebrow?: string;
+  intro?: string;
+}
+
+const { title, eyebrow, intro } = Astro.props;
+---
+
+<header class="border-b border-rule">
+  <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1 class:list={['font-serif text-[2.25rem] font-bold leading-tight text-ink sm:text-5xl', eyebrow && 'mt-2']}>
+      {title}
+    </h1>
+    {intro && <p class="mt-4 max-w-[60ch] text-[1.0625rem] leading-relaxed text-muted sm:text-lg">{intro}</p>}
+    <slot />
+  </div>
+</header>

@@ -1,11 +1,16 @@
 ---
 import { type Locale, useTranslations, localePath, stripLocale, locales } from '../i18n';
 
+/**
+ * Selector de limbă redus la codurile din două litere, despărțite prin bare
+ * subțiri — ca indicativele de ediție de pe un colofon, nu ca butoane.
+ */
 interface Props {
   lang: Locale;
+  class?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, class: extra = '' } = Astro.props;
 const t = useTranslations(lang);
 // Pagina 404 există doar în română — selectorul duce atunci la paginile principale.
 const rawPath = stripLocale(Astro.url.pathname);
@@ -13,24 +18,25 @@ const path = rawPath.startsWith('/404') ? '/' : rawPath;
 const names: Record<Locale, string> = { ro: 'Română', fr: 'Français', en: 'English', de: 'Deutsch' };
 ---
 
-<nav aria-label={t('nav.language')} class="flex items-center gap-1 text-sm">
+<nav aria-label={t('nav.language')} class:list={['flex items-center', extra]}>
   {
-    locales.map((l) => (
-      <a
-        href={localePath(l, path)}
-        hreflang={l}
-        lang={l}
-        aria-current={l === lang ? 'true' : undefined}
-        title={names[l]}
-        class:list={[
-          'rounded px-2 py-1 font-medium uppercase tracking-wide transition-colors',
-          l === lang
-            ? 'bg-brand-800 text-white'
-            : 'text-stone-500 hover:bg-brand-50 hover:text-brand-900',
-        ]}
-      >
-        {l}
-      </a>
+    locales.map((l, i) => (
+      <>
+        {i > 0 && <span class="mx-1.5 text-rule" aria-hidden="true">/</span>}
+        <a
+          href={localePath(l, path)}
+          hreflang={l}
+          lang={l}
+          aria-current={l === lang ? 'true' : undefined}
+          title={names[l]}
+          class:list={[
+            'font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] transition-colors',
+            l === lang ? 'text-accent' : 'text-muted hover:text-ink',
+          ]}
+        >
+          {l}
+        </a>
+      </>
     ))
   }
 </nav>

@@ -1,10 +1,11 @@
 ---
 import '@fontsource-variable/inter';
 import '@fontsource/cardo/400.css';
+import '@fontsource/cardo/400-italic.css';
 import '@fontsource/cardo/700.css';
 import '../styles/global.css';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+import Masthead from '../components/Masthead.astro';
+import Colophon from '../components/Colophon.astro';
 import { type Locale, useTranslations, localePath, stripLocale, locales, withBase } from '../i18n';
 
 interface Props {
@@ -53,15 +54,15 @@ const ogLocales: Record<Locale, string> = { ro: 'ro_RO', fr: 'fr_CH', en: 'en_GB
   <body class="flex min-h-screen flex-col">
     <a
       href="#continut"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-brand-900 focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
     >
       {t('nav.skipToContent')}
     </a>
-    <Header lang={lang} />
+    <Masthead lang={lang} />
     <main id="continut" class="flex-1">
       <slot />
     </main>
-    <Footer lang={lang} />
+    <Colophon lang={lang} />
     <script>
       // Asamblează adresele de e-mail protejate abia la click (anti-spam):
       // adresa nu apare nicăieri în HTML în clar.
