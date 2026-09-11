@@ -1,0 +1,140 @@
+---
+import Emblema from './Emblema.astro';
+import LangSwitcher from './LangSwitcher.astro';
+import { type Locale, useTranslations, localePath, stripLocale } from '../i18n';
+
+/**
+ * Capul de pagină e o bandă roșie plină, cu literă albă: prima dată când vezi
+ * site-ul, vezi steagul.
+ *
+ * Pe ecran mare stă pe DOUĂ rânduri — nume și acțiuni sus, rubrici dedesubt,
+ * centrate și cu `flex-wrap`. Pe un singur rând, etichetele germane
+ * („Byzantinischer Gesang”, „Mitglied werden”) împingeau selectorul de limbă
+ * în afara ecranului și făceau pagina să defileze orizontal. Două rânduri nu
+ * se pot revărsa, oricât de lungă ar fi traducerea.
+ */
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const path = stripLocale(Astro.url.pathname);
+
+const items = [
+  { href: '/evenimente/', label: t('nav.activities') },
+  { href: '/amintiri/', label: t('nav.memories') },
+  { href: '/ocrotitorul/', label: t('nav.patron') },
+  { href: '/membri/', label: t('nav.members') },
+  { href: '/psaltica/', label: t('nav.psaltica') },
+  { href: '/contact/', label: t('nav.contact') },
+];
+
+const isActive = (href: string) => path.startsWith(href.replace(/\/$/, ''));
+---
+
+<header class="bg-swiss text-white">
+  <!-- Rândul numelui -->
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
+    <a href={localePath(lang, '/')} class="flex min-w-0 shrink items-center gap-3">
+      <Emblema class="h-8 w-8 shrink-0 text-white sm:h-9 sm:w-9" />
+      <span class="truncate font-serif text-lg font-bold uppercase tracking-[0.1em] sm:text-xl">
+        {t('site.name')}
+      </span>
+    </a>
+
+    <div class="flex shrink-0 items-center gap-4">
+      <a
+        href={localePath(lang, '/devino-membru/')}
+        class="hidden whitespace-nowrap bg-white px-4 py-2 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-swiss transition-colors hover:bg-white/90 lg:inline-block"
+      >
+        {t('nav.join')}
+      </a>
+      <LangSwitcher lang={lang} class="hidden sm:flex" />
+      <button
+        id="meniu-buton"
+        type="button"
+        class="p-1 text-white lg:hidden"
+        aria-expanded="false"
+        aria-controls="meniu-mobil"
+        aria-label={t('nav.openMenu')}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path stroke-linecap="round" d="M3.5 7h17M3.5 12h17M3.5 17h17" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Rândul rubricilor -->
+  <nav class="hidden border-t border-white/20 lg:block" aria-label={t('nav.menu')}>
+    <ul class="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-8 gap-y-1 px-4 py-2.5">
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={localePath(lang, item.href)}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'eyebrow block whitespace-nowrap border-b-2 py-0.5 transition-colors',
+                isActive(item.href)
+                  ? 'border-white text-white'
+                  : 'border-transparent text-white/80 hover:text-white',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  <!-- Meniul pentru ecrane mici: roșu mai adânc, ca să se distingă de bandă -->
+  <nav id="meniu-mobil" class="hidden bg-swiss-deep lg:hidden" aria-label={t('nav.menu')}>
+    <ul class="mx-auto max-w-7xl px-4 py-1">
+      {
+        [{ href: '/', label: t('nav.home') }, ...items].map((item) => (
+          <li class="border-b border-white/15 last:border-0">
+            <a
+              href={localePath(lang, item.href)}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'block py-3 font-sans text-xs font-semibold uppercase tracking-[0.14em]',
+                isActive(item.href) ? 'text-white' : 'text-white/80',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 border-t border-white/15 px-4 py-3">
+      <a
+        href={localePath(lang, '/devino-membru/')}
+        class="bg-white px-4 py-2 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-swiss"
+      >
+        {t('nav.join')}
+      </a>
+      <LangSwitcher lang={lang} />
+    </div>
+  </nav>
+</header>
+
+<script>
+  const buton = document.getElementById('meniu-buton');
+  const meniu = document.getElementById('meniu-mobil');
+  buton?.addEventListener('click', () => {
+    const deschis = !meniu?.classList.toggle('hidden');
+    buton.setAttribute('aria-expanded', String(deschis));
+  });
+</script>

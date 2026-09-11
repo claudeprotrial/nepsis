@@ -151,4 +151,18 @@ export default {
   'notFound.title': 'Pagina nu a fost găsită',
   'notFound.text': 'Ne pare rău, pagina căutată nu există (sau a fost mutată).',
   'notFound.home': 'Înapoi la pagina principală',
+
+  // v7 — cruce albă pe roșu
+  'home.heroHeadline': 'Aceeași credință, departe de casă',
+  'home.heroLead': 'Ne adunăm la hram și la priveghere, pe munte și la studiu biblic — de la Geneva la St. Gallen. Aici ne e a doua casă.',
+  'home.heroPhotoAlt': 'Tinerii Nepsis Elveția împreună cu ierarhul și preoții, la hramul frăției',
+  'home.sectionUpcoming': 'Ce urmează',
+  'home.sectionArchive': 'Din amintirile noastre',
+  'home.sectionAbout': 'Cine suntem',
+  'home.sectionJoin': 'E loc și pentru tine',
+  'home.joinText': 'Nu trebuie să cunoști pe nimeni dinainte și nu trebuie să te pricepi la nimic anume. Scrie-ne și te așteptăm la următoarea întâlnire.',
+  'home.joinCta': 'Devino membru',
+  'footer.sections': 'Rubrici',
+  'archive.allMemories': 'Toate amintirile',
+  'archive.allEvents': 'Toate evenimentele',
 } as const;

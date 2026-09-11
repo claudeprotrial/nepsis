@@ -1,11 +1,16 @@
 ---
 import { type Locale, useTranslations, localePath, stripLocale, locales } from '../i18n';
 
+/**
+ * Selectorul de limbă stă pe banda roșie, deci e alb; limba curentă e subliniată,
+ * nu colorată — pe roșu nu mai avem o a doua culoare de rezervă.
+ */
 interface Props {
   lang: Locale;
+  class?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, class: extra = '' } = Astro.props;
 const t = useTranslations(lang);
 // Pagina 404 există doar în română — selectorul duce atunci la paginile principale.
 const rawPath = stripLocale(Astro.url.pathname);
@@ -13,7 +18,7 @@ const path = rawPath.startsWith('/404') ? '/' : rawPath;
 const names: Record<Locale, string> = { ro: 'Română', fr: 'Français', en: 'English', de: 'Deutsch' };
 ---
 
-<nav aria-label={t('nav.language')} class="flex items-center gap-1 text-sm">
+<nav aria-label={t('nav.language')} class:list={['flex items-center gap-2.5', extra]}>
   {
     locales.map((l) => (
       <a
@@ -23,10 +28,8 @@ const names: Record<Locale, string> = { ro: 'Română', fr: 'Français', en: 'En
         aria-current={l === lang ? 'true' : undefined}
         title={names[l]}
         class:list={[
-          'rounded px-2 py-1 font-medium uppercase tracking-wide transition-colors',
-          l === lang
-            ? 'bg-brand-800 text-white'
-            : 'text-stone-500 hover:bg-brand-50 hover:text-brand-900',
+          'font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.12em] transition-colors',
+          l === lang ? 'underline decoration-2 underline-offset-4' : 'opacity-70 hover:opacity-100',
         ]}
       >
         {l}

@@ -1,10 +1,13 @@
 ---
-import { Image } from 'astro:assets';
-import { type Locale, useTranslations, localePath } from '../i18n';
+import Emblema from './Emblema.astro';
 import ObfuscatedEmail from './ObfuscatedEmail.astro';
 import SocialLinks from './SocialLinks.astro';
-import logo from '../assets/logo-small.jpg';
+import { type Locale, useTranslations, localePath } from '../i18n';
 
+/**
+ * Subsolul închide pagina în roșul cel mai adânc, cu sigla mare ton pe ton în
+ * spate — semnătura, nu un al doilea meniu.
+ */
 interface Props {
   lang: Locale;
 }
@@ -12,42 +15,68 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+
+const rubrici = [
+  { href: '/evenimente/', label: t('nav.activities') },
+  { href: '/amintiri/', label: t('nav.memories') },
+  { href: '/ocrotitorul/', label: t('nav.patron') },
+  { href: '/membri/', label: t('nav.members') },
+  { href: '/psaltica/', label: t('nav.psaltica') },
+  { href: '/devino-membru/', label: t('nav.join') },
+];
 ---
 
-<footer class="mt-16 border-t border-stone-200 bg-brand-950 text-stone-300">
-  <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-14 text-center">
-    <a href={localePath(lang, '/')} class="flex flex-col items-center gap-4">
-      <Image
-        src={logo}
-        alt=""
-        width="160"
-        height="160"
-        format="webp"
-        class="h-20 w-20 rounded-full border-2 border-white/20 object-cover shadow-md"
-        loading="lazy"
-      />
-      <span class="font-serif text-2xl font-bold uppercase tracking-wide text-white">{t('site.name')}</span>
-    </a>
+<footer class="relative overflow-hidden bg-swiss-dark text-white">
+  <!-- Sigla uriașă, abia vizibilă: ton pe ton, decorativă. -->
+  <Emblema class="pointer-events-none absolute -right-10 -bottom-16 h-72 w-72 text-white/[0.06] sm:h-96 sm:w-96" />
 
-    <p class="max-w-md text-sm leading-relaxed text-stone-400">{t('footer.tagline')}</p>
-
-    <SocialLinks
-      showGroups={false}
-      class="justify-center gap-3 [&_a]:text-stone-400 [&_a:hover]:bg-brand-800 [&_a:hover]:text-white"
-    />
-
-    <p class="text-sm">
-      <ObfuscatedEmail class="text-brand-200 underline decoration-brand-700 underline-offset-2 hover:text-white" />
-      <span class="mx-2 text-stone-600" aria-hidden="true">·</span>
-      <a href={localePath(lang, '/newsletter/')} class="underline decoration-brand-700 underline-offset-2 hover:text-white">
-        {t('contact.newsletterLink')}
+  <div class="relative mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-3 lg:gap-14">
+    <div>
+      <a href={localePath(lang, '/')} class="flex items-center gap-3">
+        <Emblema class="h-9 w-9 text-white" />
+        <span class="font-serif text-lg font-bold uppercase tracking-[0.1em]">{t('site.name')}</span>
       </a>
-    </p>
+      <p class="mt-4 max-w-xs text-[0.9375rem] leading-relaxed text-white/70">{t('footer.about')}</p>
+    </div>
+
+    <nav aria-label={t('nav.menu')}>
+      <p class="eyebrow text-white/60">{t('footer.sections')}</p>
+      <ul class="mt-4 space-y-2.5">
+        {
+          rubrici.map((r) => (
+            <li>
+              <a
+                href={localePath(lang, r.href)}
+                class="font-serif text-[1.0625rem] text-white/90 underline decoration-white/25 underline-offset-4 transition-colors hover:decoration-white"
+              >
+                {r.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div>
+      <p class="eyebrow text-white/60">{t('footer.contact')}</p>
+      <p class="mt-4 text-[0.9375rem]">
+        <ObfuscatedEmail class="text-white underline decoration-white/25 underline-offset-4 hover:decoration-white" />
+      </p>
+      <p class="mt-2.5 text-[0.9375rem]">
+        <a
+          href={localePath(lang, '/newsletter/')}
+          class="text-white underline decoration-white/25 underline-offset-4 hover:decoration-white"
+        >
+          {t('contact.newsletterLink')}
+        </a>
+      </p>
+      <SocialLinks showGroups={false} class="mt-5 gap-1 [&_a]:text-white/70 [&_a:hover]:text-white" />
+    </div>
   </div>
 
-  <div class="border-t border-brand-900">
-    <p class="mx-auto max-w-6xl px-4 py-4 text-center text-xs text-stone-400">
-      © {year} Nepsis Elvetia. {t('footer.rights')}
+  <div class="relative border-t border-white/15">
+    <p class="mx-auto max-w-7xl px-4 py-4 text-center font-sans text-[0.6875rem] uppercase tracking-[0.1em] text-white/60">
+      © {year} Nepsis Elveția — {t('footer.rights')}
     </p>
   </div>
 </footer>

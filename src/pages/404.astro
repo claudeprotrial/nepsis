@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import Emblema from '../components/Emblema.astro';
 import { defaultLocale, useTranslations, localePath } from '../i18n';
 
 const lang = defaultLocale;
@@ -7,17 +8,22 @@ const t = useTranslations(lang);
 ---
 
 <Base lang={lang} title={`${t('notFound.title')} · ${t('site.name')}`} description={t('notFound.text')}>
-  <div class="mx-auto max-w-3xl px-4 py-24 text-center">
-    <p class="font-serif text-7xl font-bold text-brand-200">404</p>
-    <h1 class="mt-4 font-serif text-3xl font-bold text-brand-950">{t('notFound.title')}</h1>
-    <p class="mt-3 text-lg text-stone-600">{t('notFound.text')}</p>
-    <p class="mt-8">
-      <a
-        href={localePath(lang, '/')}
-        class="inline-block rounded-lg bg-brand-800 px-5 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-      >
-        {t('notFound.home')}
-      </a>
-    </p>
-  </div>
+  <section class="relative flex min-h-[60vh] items-center overflow-hidden bg-swiss text-white">
+    <Emblema
+      class="pointer-events-none absolute -right-16 -bottom-20 h-80 w-80 text-swiss-deep sm:h-96 sm:w-96"
+    />
+    <div class="relative mx-auto w-full max-w-7xl px-4 py-20 text-center">
+      <p class="font-serif text-[5rem] font-bold leading-none text-white/35 sm:text-[8rem]">404</p>
+      <h1 class="mt-4 font-serif text-3xl font-bold sm:text-4xl">{t('notFound.title')}</h1>
+      <p class="mx-auto mt-4 max-w-[46ch] text-base leading-relaxed text-white/85">{t('notFound.text')}</p>
+      <p class="mt-9">
+        <a
+          href={localePath(lang, '/')}
+          class="inline-block bg-white px-7 py-3.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-swiss transition-colors hover:bg-white/90"
+        >
+          {t('notFound.home')}
+        </a>
+      </p>
+    </div>
+  </section>
 </Base>

@@ -154,6 +154,20 @@ const en: Partial<typeof ro> = {
   'notFound.title': 'Page not found',
   'notFound.text': 'Sorry, the page you are looking for does not exist (or has been moved).',
   'notFound.home': 'Back to the home page',
+
+  // v7 — cruce albă pe roșu
+  'home.heroHeadline': 'The same faith, far from home',
+  'home.heroLead': 'We gather at the patronal feast and at vigils, in the mountains and at Bible study — from Geneva to St. Gallen. Here we are at home.',
+  'home.heroPhotoAlt': 'The young people of Nepsis Switzerland with the bishop and the priests at the fraternity\'s patronal feast',
+  'home.sectionUpcoming': 'Coming up',
+  'home.sectionArchive': 'Our memories',
+  'home.sectionAbout': 'Who we are',
+  'home.sectionJoin': 'There is room for you',
+  'home.joinText': 'You do not need to know anyone beforehand, nor to be good at anything in particular. Write to us and we will see you at the next gathering.',
+  'home.joinCta': 'Become a member',
+  'footer.sections': 'Sections',
+  'archive.allMemories': 'All memories',
+  'archive.allEvents': 'All events',
 };
 
 export default en;

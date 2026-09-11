@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
 import { langStaticPaths, localeFromParam, useTranslations } from '../../i18n';
 import { getPage } from '../../lib/content';
 import psalticaLogo from '../../assets/nepsis_psaltica_logo.jpg';
@@ -20,70 +21,59 @@ const { entry, Content } = await getPage('psaltica', lang);
   description={entry.data.description ?? t('psaltica.description')}
   ogImage="/psaltica/img/nepsis_psaltica_logo.jpg"
 >
-  <div class="mx-auto max-w-6xl px-4 py-10 sm:py-14">
-    <h1 class="font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{t('psaltica.title')}</h1>
+  <PageHero title={t('psaltica.title')} />
 
-    <div class="mt-10 gap-10 lg:grid lg:grid-cols-2">
-      <div>
+  <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+    <div class="gap-12 md:grid md:grid-cols-[20rem_1fr] lg:gap-16">
+      <figure class="mx-auto max-w-[20rem] md:mx-0">
         <Image
           src={psalticaLogo}
           alt={t('psaltica.logoAlt')}
-          widths={[400, 700, 1000]}
-          sizes="(min-width: 640px) 28rem, 62vw"
+          widths={[400, 700]}
+          sizes="20rem"
           format="webp"
-          quality={70}
+          quality={76}
           fetchpriority="high"
           decoding="async"
-          class="w-full max-w-md rounded-xl border border-stone-200 shadow-sm"
+          class="w-full"
         />
-        <div class="prose-md mt-8 text-stone-700">
-          <Content />
-        </div>
-      </div>
-      <div class="mt-12 lg:mt-0">
-        <h2 class="text-2xl font-bold text-brand-950">{t('psaltica.testimonials')}</h2>
-        <!-- Harta interactivă (ArcGIS) se încarcă abia la click, ca pagina să rămână rapidă. -->
-        <div
-          id="marturii-fatada"
-          class="mt-4 flex h-[500px] items-center justify-center overflow-hidden rounded-xl border border-stone-200 bg-brand-50 shadow-sm"
-          data-src="https://storymaps.arcgis.com/stories/e2f319110254454fad115d0c30b00d1f?cover=false"
-          data-title={t('psaltica.testimonials')}
-        >
-          <button
-            type="button"
-            class="rounded-lg bg-brand-800 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-          >
-            {t('psaltica.testimonials')} →
-          </button>
-        </div>
-        <noscript>
-          <p class="mt-3">
-            <a
-              href="https://storymaps.arcgis.com/stories/e2f319110254454fad115d0c30b00d1f"
-              target="_blank"
-              rel="noopener"
-              class="text-brand-700 underline"
-            >
-              {t('psaltica.testimonials')}
-            </a>
-          </p>
-        </noscript>
+      </figure>
+      <div class="prose-n mt-10 max-w-[62ch] text-ink md:mt-0">
+        <Content />
       </div>
     </div>
   </div>
-</Base>
 
-<script>
-  // Înlocuiește fațada cu iframe-ul ArcGIS abia la click.
-  const fatada = document.getElementById('marturii-fatada');
-  fatada?.querySelector('button')?.addEventListener('click', () => {
-    const iframe = document.createElement('iframe');
-    iframe.src = fatada.dataset.src ?? '';
-    iframe.title = fatada.dataset.title ?? '';
-    iframe.width = '100%';
-    iframe.height = '500';
-    iframe.allowFullscreen = true;
-    iframe.allow = 'geolocation';
-    fatada.replaceChildren(iframe);
-  });
-</script>
+  <section class="bg-swiss text-white" aria-labelledby="marturii">
+    <div class="mx-auto max-w-7xl px-4 py-16 sm:py-20">
+      <h2 id="marturii" class="font-serif text-2xl font-bold sm:text-3xl">{t('psaltica.testimonials')}</h2>
+
+      <!-- Harta interactivă (ArcGIS) se încarcă abia la click, ca pagina să rămână rapidă. -->
+      <div
+        id="marturii-fatada"
+        class="mt-8 flex h-[500px] items-center justify-center overflow-hidden border border-white/30 bg-swiss-deep"
+        data-src="https://storymaps.arcgis.com/stories/e2f319110254454fad115d0c30b00d1f?cover=false"
+        data-title={t('psaltica.testimonials')}
+      >
+        <button
+          type="button"
+          class="bg-white px-7 py-3.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-swiss transition-colors hover:bg-white/90"
+        >
+          {t('psaltica.testimonials')} →
+        </button>
+      </div>
+      <noscript>
+        <p class="mt-4">
+          <a
+            href="https://storymaps.arcgis.com/stories/e2f319110254454fad115d0c30b00d1f"
+            target="_blank"
+            rel="noopener"
+            class="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white underline underline-offset-4"
+          >
+            {t('psaltica.testimonials')}
+          </a>
+        </p>
+      </noscript>
+    </div>
+  </section>
+</Base>

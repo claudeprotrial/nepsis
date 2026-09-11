@@ -1,7 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import Base from '../../../layouts/Base.astro';
-import Carousel from '../../../components/Carousel.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Foto from '../../../components/Foto.astro';
 import {
   locales,
   defaultLocale,
@@ -9,7 +10,6 @@ import {
   localePath,
   useTranslations,
   formatDate,
-  type Locale,
 } from '../../../i18n';
 import { groupByTranslationKey, canonicalOf, localizedOf } from '../../../lib/content';
 
@@ -40,6 +40,9 @@ const t = useTranslations(lang);
 const { Content } = await render(memory);
 const images = memory.data.images;
 
+const data =
+  memory.data.date && memory.data.showDate ? formatDate(memory.data.date, lang) : String(memory.data.year);
+
 // Meta description: primul rând de text, fără marcaje Markdown/HTML.
 const description =
   memory.body
@@ -57,36 +60,41 @@ const description =
   description={description}
   ogImage={images[0]?.src}
 >
-  <article class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-    <nav>
+  <PageHero title={memory.data.title} eyebrow={data} />
+
+  <article class="mx-auto max-w-[68ch] px-4 py-12 sm:py-16">
+    <nav class="mb-8">
       <a
         href={localePath(lang, `/amintiri/#an${memory.data.year}`)}
-        class="text-sm font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+        class="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-swiss underline decoration-swiss/40 underline-offset-4 hover:decoration-swiss"
       >
         ← {t('memories.back')}
       </a>
     </nav>
 
-    <header class="mt-6">
-      <p class="text-sm font-semibold uppercase tracking-widest text-brand-600">
-        {t('memories.year')} {memory.data.year}
-      </p>
-      <h1 class="mt-2 font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{memory.data.title}</h1>
-      {
-        memory.data.date && memory.data.showDate && (
-          <p class="mt-2 text-stone-500">
-            <time datetime={memory.data.date.toISOString().slice(0, 10)}>
-              {formatDate(memory.data.date, lang)}
-            </time>
-          </p>
-        )
-      }
-    </header>
-
-    <div class="prose-md mt-8 text-stone-700">
+    <div class="prose-n text-ink">
       <Content />
     </div>
 
-    <Carousel images={images} lang={lang} class="mt-10" />
+    <!--
+      Aici fotografiile se arată în culorile lor, nu tratate în roșu: pe suprafețele
+      de brand (prima pagină, arhivă) roșul unifică instantaneele inegale, dar pe
+      pagina amintirii fotografia E subiectul și trebuie văzută cum a fost.
+    -->
+    {
+      images.length > 0 && (
+        <div class="mt-12 grid gap-4 sm:grid-cols-2">
+          {images.map((img, i) => (
+            <Foto
+              src={img.src}
+              alt={img.alt}
+              natural
+              eager={i === 0}
+              class:list={['aspect-[4/3]', images.length % 2 === 1 && i === 0 && 'sm:col-span-2 sm:aspect-[16/9]']}
+            />
+          ))}
+        </div>
+      )
+    }
   </article>
 </Base>

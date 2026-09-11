@@ -1,76 +1,66 @@
 ---
-import { render, type CollectionEntry } from 'astro:content';
-import { type Locale, formatDate, useTranslations, withBase } from '../i18n';
+import Foto from './Foto.astro';
+import Emblema from './Emblema.astro';
+import { type Locale, formatDate } from '../i18n';
+import type { CollectionEntry } from 'astro:content';
 
-/** O amintire în cronologie: text (din Markdown) + prima fotografie; restul se văd pe pagina proprie. */
+/**
+ * O amintire în grilă. Pe câmp roșu (`pe-rosu`) litera trece pe alb, iar
+ * fotografia tratată în roșu se lipește de fond; pe alb, fotografia rămâne
+ * tot roșie, dar textul e negru.
+ */
 interface Props {
   memory: CollectionEntry<'amintiri'>;
   lang: Locale;
-  /** Link către pagina proprie a amintirii — titlul devine clicabil și apare „Citește mai mult”. */
-  href?: string;
+  href: string;
+  peRosu?: boolean;
 }
 
-const { memory, lang, href } = Astro.props;
-const t = useTranslations(lang);
-const { Content } = await render(memory);
+const { memory, lang, href, peRosu = false } = Astro.props;
 const cover = memory.data.images[0];
 ---
 
-<article class="rounded-xl border border-stone-200 bg-white p-6 shadow-sm sm:p-8">
-  <header>
-    <h3 class="text-xl font-semibold text-brand-900 sm:text-2xl">
-      {
-        href ? (
-          <a href={href} class="decoration-brand-300 underline-offset-4 hover:underline">
-            {memory.data.title}
-          </a>
-        ) : (
-          memory.data.title
-        )
-      }
-    </h3>
+<article>
+  <a href={href} class="group block">
     {
-      memory.data.date && memory.data.showDate && (
-        <p class="mt-1 text-sm text-stone-500">
-          <time datetime={memory.data.date.toISOString().slice(0, 10)}>
-            {formatDate(memory.data.date, lang)}
-          </time>
-        </p>
-      )
-    }
-  </header>
-  <div class:list={['mt-5 gap-8', cover && 'md:grid md:grid-cols-2']}>
-    <div class="prose-md text-stone-700">
-      <Content />
-    </div>
-    {
-      cover && (
-        <div class="mt-6 content-start md:mt-0">
-          <img src={withBase(cover.src)} alt={cover.alt} loading="lazy" class="w-full rounded-lg object-cover" />
-          {href && (
-            <p class="mt-4 text-center">
-              <a
-                href={href}
-                class="inline-block rounded-lg bg-brand-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-              >
-                {t('memories.readMore')}
-              </a>
-            </p>
-          )}
+      cover ? (
+        <Foto
+          src={cover.src}
+          alt={cover.alt}
+          class="aspect-[4/3]"
+          imgClass="transition-transform duration-500 group-hover:scale-[1.05]"
+        />
+      ) : (
+        <div
+          class:list={[
+            'flex aspect-[4/3] items-center justify-center',
+            peRosu ? 'bg-swiss-deep' : 'bg-swiss/10',
+          ]}
+        >
+          {/* Amintire fără fotografii: sigla ține locul, mai demn decât un cuvânt. */}
+          <Emblema class:list={['h-16 w-16', peRosu ? 'text-white/25' : 'text-swiss/25']} />
         </div>
       )
     }
-  </div>
-  {
-    !cover && href && (
-      <p class="mt-5">
-        <a
-          href={href}
-          class="inline-block rounded-lg bg-brand-800 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-        >
-          {t('memories.readMore')}
-        </a>
-      </p>
-    )
-  }
+    <h3
+      class:list={[
+        'mt-3 font-serif text-lg font-bold leading-snug underline-offset-4 group-hover:underline sm:text-xl',
+        peRosu ? 'text-white decoration-white/50' : 'text-ink decoration-swiss/40',
+      ]}
+    >
+      {memory.data.title}
+    </h3>
+    <p
+      class:list={[
+        'mt-1 font-sans text-xs tracking-[0.06em]',
+        peRosu ? 'text-white/70' : 'text-muted',
+      ]}
+    >
+      {
+        memory.data.date && memory.data.showDate
+          ? formatDate(memory.data.date, lang)
+          : memory.data.year
+      }
+    </p>
+  </a>
 </article>

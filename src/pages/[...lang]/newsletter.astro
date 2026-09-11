@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
 import { langStaticPaths, localeFromParam, useTranslations } from '../../i18n';
 
 export function getStaticPaths() {
@@ -14,11 +15,10 @@ const formUrl =
 ---
 
 <Base lang={lang} title={`${t('newsletter.title')} · ${t('site.name')}`} description={t('newsletter.description')}>
-  <div class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-    <h1 class="font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{t('newsletter.heading')}</h1>
-    <p class="mt-3 max-w-prose text-lg text-stone-600">{t('newsletter.text')}</p>
+  <PageHero title={t('newsletter.heading')} intro={t('newsletter.text')} />
 
-    <div class="mt-8 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:py-20">
+    <div class="overflow-hidden border border-rule">
       <iframe
         src={`${formUrl}?embedded=true`}
         width="100%"
@@ -27,13 +27,13 @@ const formUrl =
         title={t('newsletter.heading')}></iframe>
     </div>
 
-    <p class="mt-6 text-stone-600">
+    <p class="mt-6 text-[0.9375rem] leading-relaxed text-muted">
       {t('newsletter.fallback')}
       <a
         href={formUrl}
         target="_blank"
         rel="noopener"
-        class="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
+        class="text-swiss underline decoration-swiss/40 underline-offset-4 hover:decoration-swiss"
       >
         {t('newsletter.openForm')}
       </a>

@@ -1,6 +1,21 @@
 @import 'tailwindcss';
 
 /*
+ * v7 — „Cruce albă pe roșu”.
+ *
+ * Punctul de plecare: steagul Elveției e o cruce albă pe câmp roșu, iar sigla
+ * Nepsis e un Ψ contopit cu o cruce. Aceeași figură, două identități. De aici
+ * tot sistemul: roșul elvețian e SUPRAFAȚĂ, nu accent — pagini întregi sunt
+ * roșii, cu literă albă —, iar sigla se folosește mare, ton pe ton, ca emblemă.
+ *
+ * Albul e alb pur, nu ivoriu: steagul nu are hârtie caldă.
+ *
+ * Fotografiile frăției sunt făcute cu telefonul, în lumini foarte diferite. Sunt
+ * aduse la un singur ton roșu (`.tint`) ca să se lipească de fond în loc să se
+ * certe între ele. Icoanele NU se tratează niciodată așa — vezi `.tint` mai jos.
+ */
+
+/*
  * Fonturi fallback cu metrici ajustate la Cardo/Inter (calculate cu fontkit,
  * media lățimilor a–z ponderată cu frecvențele literelor): până se încarcă
  * fontul web, textul are aceleași dimensiuni — deci zero salt de layout (CLS).
@@ -23,26 +38,19 @@
 }
 
 @theme {
-  /* Tipografie: Cardo (serif) pentru titluri, Inter pentru text — ambele cu diacritice românești (latin-ext). */
+  /* Cardo dă eleganța și nota bisericească; Inter duce textul curent și e mai tânăr. */
   --font-serif: 'Cardo', 'Cardo Fallback', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter Variable', 'Inter', 'Inter Fallback', Arial, ui-sans-serif, system-ui, sans-serif;
 
-  /* Alb + roșu, ca stema Elveției — roșul elvețian (~#d52b1e) e singura culoare de accent. */
-  --color-brand-50: #fdf3f2;
-  --color-brand-100: #fce4e2;
-  --color-brand-200: #facdc9;
-  --color-brand-300: #f5a9a2;
-  --color-brand-400: #ed766b;
-  --color-brand-500: #e04b3c;
-  --color-brand-600: #d02d1e;
-  --color-brand-700: #ae2416;
-  --color-brand-800: #902115;
-  --color-brand-900: #772017;
-  --color-brand-950: #400c06;
+  /* Roșul steagului elvețian și două trepte mai adânci, pentru ton pe ton. */
+  --color-swiss: #d52b1e;
+  --color-swiss-deep: #a81d13;
+  --color-swiss-dark: #7c150e;
 
-  /* Fond alb (abia perceptibil cald, ca să existe alternanță între secțiuni). */
-  --color-paper: #fbf8f7;
-  --color-ink: #2b2827;
+  --color-ink: #141210;
+  --color-muted: #6b625e;
+  --color-rule: #e7e1de;
+  --color-rule-red: #e8a9a3;
 }
 
 html {
@@ -51,76 +59,170 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--color-paper);
+  background-color: #fff;
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Titlurile folosesc serif-ul peste tot. */
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-family: var(--font-serif);
   text-wrap: balance;
 }
 
-/* Stiluri implicite pentru proza venită din fișierele Markdown. */
-.prose-md {
-  @apply text-base leading-relaxed;
+/*
+ * Supratitlu: majuscule mici, spațiate. Pe alb e roșu, pe roșu îl trecem pe alb
+ * cu utilitarele obișnuite de culoare.
+ */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
-.prose-md > * + * {
-  margin-top: 1em;
+
+/*
+ * Fotografie adusă la tonul roșu al mărcii: alb-negru, apoi înmulțită peste
+ * câmpul roșu. Umbrele rămân adânci, luminile devin roșu deschis — pozele
+ * inegale ajung o singură materie.
+ *
+ * ATENȚIE: nu se aplică niciodată icoanelor sau stemei. Acelea se arată în
+ * culorile lor; contrastul dintre instantaneele colorate în roșu și icoana
+ * netratată e intenționat și poartă o distincție, nu o inconsecvență.
+ */
+.tint {
+  background-color: var(--color-swiss);
 }
-.prose-md h2 {
-  @apply mt-10 mb-3 text-2xl font-semibold text-brand-900;
+.tint > img {
+  filter: grayscale(1) contrast(1.12) brightness(1.06);
+  mix-blend-mode: multiply;
 }
-.prose-md h3 {
-  @apply mt-8 mb-2 text-xl font-semibold text-brand-900;
+
+/*
+ * Emblema: sigla e o formă plină, deci o folosim ca mască și o umplem cu
+ * culoarea curentă. Așa poate fi albă pe roșu, roșie pe alb sau roșu-adânc pe
+ * roșu, fără să ținem trei fișiere.
+ * Adresa măștii se dă inline din Astro (`withBase`), ca să meargă și când
+ * site-ul e găzduit într-un subdirector.
+ */
+.emblema {
+  -webkit-mask-image: var(--masca);
+  mask-image: var(--masca);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  background-color: currentColor;
 }
-.prose-md a {
-  @apply text-brand-700 underline decoration-brand-300 underline-offset-2 transition-colors;
-  overflow-wrap: anywhere;
+
+/* Proza din Markdown, pe fond alb. */
+.prose-n {
+  font-size: 1.0625rem;
+  line-height: 1.7;
 }
-.prose-md a:hover {
-  @apply text-brand-900 decoration-brand-700;
+.prose-n > * + * {
+  margin-top: 1.1em;
 }
-.prose-md ul {
-  @apply list-disc pl-6 space-y-1;
+.prose-n h2 {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+  font-size: 1.5rem;
+  font-weight: 700;
 }
-.prose-md ol {
-  @apply list-decimal pl-6 space-y-1;
+.prose-n h3 {
+  margin-top: 1.7em;
+  margin-bottom: 0.4em;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
-.prose-md blockquote {
-  @apply border-l-4 border-brand-200 pl-4 italic text-stone-600;
+.prose-n a {
+  color: var(--color-swiss-deep);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--color-swiss) 40%, transparent);
+  transition: text-decoration-color 150ms;
 }
-.prose-md img {
-  @apply rounded-lg;
-  max-width: 100%;
-  height: auto;
+.prose-n a:hover {
+  text-decoration-color: var(--color-swiss);
 }
-.prose-md iframe {
-  max-width: 100%;
+.prose-n blockquote {
+  margin-block: 1.5em;
+  border-left: 3px solid var(--color-swiss);
+  padding-left: 1.1em;
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  font-style: italic;
+  color: var(--color-muted);
 }
-.prose-md table {
-  @apply w-full text-left text-sm;
+.prose-n ul,
+.prose-n ol {
+  padding-left: 1.3em;
+}
+.prose-n ul {
+  list-style: disc;
+}
+.prose-n ol {
+  list-style: decimal;
+}
+.prose-n li + li {
+  margin-top: 0.4em;
+}
+.prose-n table {
+  width: 100%;
   border-collapse: collapse;
+  font-size: 0.9375rem;
 }
-.prose-md th {
-  @apply border-b-2 border-brand-200 py-2 pr-4 font-semibold text-brand-900;
+.prose-n th,
+.prose-n td {
+  border-bottom: 1px solid var(--color-rule);
+  padding: 0.65em 0.4em;
+  text-align: left;
+  vertical-align: top;
 }
-.prose-md td {
-  @apply border-b border-stone-200 py-2 pr-4 align-top;
-}
-.prose-md strong {
-  @apply font-semibold;
+.prose-n th {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
 }
 
-/* Tabelele late din Markdown derulează orizontal pe mobil în loc să rupă pagina. */
-.prose-md .table-scroll,
-.prose-md > astro-island {
-  overflow-x: auto;
+/* Aceeași proză, dar pe câmp roșu. */
+.prose-n.pe-rosu,
+.pe-rosu .prose-n {
+  color: #fff;
+}
+.pe-rosu .prose-n a,
+.prose-n.pe-rosu a {
+  color: #fff;
+  text-decoration-color: rgba(255, 255, 255, 0.5);
+}
+.pe-rosu .prose-n a:hover,
+.prose-n.pe-rosu a:hover {
+  text-decoration-color: #fff;
+}
+.pe-rosu .prose-n blockquote,
+.prose-n.pe-rosu blockquote {
+  border-left-color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.85);
 }
 
-/* E-mailul nu apare în HTML: e asamblat vizual din atributele data-* (anti-spam). */
+/*
+ * Adresa de e-mail se compune din atributele data-* abia la randare, ca să nu
+ * apară nicăieri în HTML în clar (anti-spam). Perechea acestei reguli e
+ * ascultătorul de click din Base.astro, care asamblează „mailto:”.
+ */
 .email-protejat::after {
   content: attr(data-x) '@' attr(data-y) '.' attr(data-z);
+}
+
+img {
+  max-width: 100%;
 }

@@ -1,0 +1,27 @@
+---
+import { withBase } from '../i18n';
+
+/**
+ * Sigla Nepsis — un Ψ contopit cu o cruce — folosită ca formă, nu ca imagine:
+ * fișierul PNG e doar masca, iar culoarea vine din `currentColor`. Așa aceeași
+ * marcă poate fi albă pe roșu, roșie pe alb sau roșu-adânc pe roșu.
+ *
+ * Adresa măștii se dă inline (nu din CSS), ca `withBase` să o poată prefixa
+ * atunci când site-ul e găzduit într-un subdirector.
+ */
+interface Props {
+  class?: string;
+  /** Marca e decorativă când textul de lângă ea spune deja numele. */
+  label?: string;
+}
+
+const { class: extra = '', label } = Astro.props;
+const masca = `url('${withBase('/img/sigla-alpha.png')}')`;
+---
+
+<span
+  class:list={['emblema inline-block', extra]}
+  style={`--masca: ${masca}`}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}></span>

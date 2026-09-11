@@ -1,0 +1,32 @@
+---
+import { withBase } from '../i18n';
+
+/**
+ * Fotografie adusă la tonul roșu al mărcii. Pozele frăției vin de pe zeci de
+ * telefoane, cu lumini care nu seamănă între ele; tratate la fel, se așază una
+ * lângă alta fără să se certe.
+ *
+ * `natural` oprește tratamentul — pentru icoane și stemă, care se arată în
+ * culorile lor.
+ */
+interface Props {
+  src: string;
+  alt?: string;
+  class?: string;
+  imgClass?: string;
+  natural?: boolean;
+  eager?: boolean;
+}
+
+const { src, alt = '', class: extra = '', imgClass = '', natural = false, eager = false } = Astro.props;
+---
+
+<div class:list={[natural ? '' : 'tint', 'overflow-hidden', extra]}>
+  <img
+    src={withBase(src)}
+    alt={alt}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    class:list={['h-full w-full object-cover', imgClass]}
+  />
+</div>

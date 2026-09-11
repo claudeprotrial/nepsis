@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
 import { langStaticPaths, localeFromParam, useTranslations } from '../../i18n';
 import { getPage } from '../../lib/content';
 
@@ -17,16 +18,18 @@ const { entry, Content } = await getPage('devino-membru', lang);
   title={`${t('join.title')} · ${t('site.name')}`}
   description={entry.data.description ?? t('join.description')}
 >
-  <div class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-    <h1 class="font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{entry.data.title}</h1>
-    <div class="prose-md mt-8 text-stone-700">
+  <PageHero title={entry.data.title} intro={t('home.joinText')} />
+
+  <div class="mx-auto max-w-[62ch] px-4 py-16 sm:py-20">
+    <div class="prose-n text-ink">
       <Content />
     </div>
-    <p class="mt-10">
-      <!-- Butonul asamblează adresa la click — nu există „mailto:” în clar în HTML. -->
+
+    <p class="mt-12 border-t border-rule pt-10">
+      <!-- Legătura asamblează adresa la click — nu există „mailto:” în clar în HTML. -->
       <a
         href="#"
-        class="email-protejat-buton inline-block rounded-lg bg-brand-800 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
+        class="email-protejat-buton inline-block bg-swiss px-7 py-3.5 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-white transition-colors hover:bg-swiss-deep"
         data-x="nepsis.ch"
         data-y="mitropolia"
         data-z="eu"
