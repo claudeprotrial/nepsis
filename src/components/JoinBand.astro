@@ -1,0 +1,64 @@
+---
+import { type Locale, useTranslations, localePath, withBase } from '../i18n';
+
+/**
+ * Banda de invitație: fond roșu adânc, un singur îndemn, iar dedesubt un mozaic
+ * de fotografii reale de la întâlniri. Pozele sunt inegale ca lumină și încadrare
+ * — puse multe și mici, neregularitatea devine energie, nu neglijență.
+ *
+ * Primește cel mult 9 imagini: pe ecran mare, prima ocupă un pătrat dublu, iar
+ * celelalte opt umplu exact restul celor două rânduri ale grilei de șase coloane.
+ */
+interface Props {
+  lang: Locale;
+  images?: { src: string; alt: string }[];
+}
+
+const { lang, images = [] } = Astro.props;
+const t = useTranslations(lang);
+const tiles = images.slice(0, 9);
+---
+
+<section class="bg-brand-900 text-white" aria-labelledby="vino-titlu">
+  <div class="mx-auto max-w-3xl px-4 pt-16 pb-10 text-center sm:pt-20">
+    <h2 id="vino-titlu" class="font-serif text-3xl font-bold leading-tight sm:text-5xl">
+      {t('home.joinTitle')}
+    </h2>
+    <p class="mx-auto mt-5 max-w-xl text-base leading-relaxed text-brand-100 sm:text-lg">
+      {t('home.joinText')}
+    </p>
+    <p class="mt-8">
+      <a
+        href={localePath(lang, '/devino-membru/')}
+        class="inline-block rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-brand-900 transition-colors hover:bg-brand-50"
+      >
+        {t('home.joinCta')}
+      </a>
+    </p>
+  </div>
+
+  {
+    tiles.length > 0 && (
+      <div class="mx-auto max-w-6xl px-4 pb-16 sm:pb-20">
+        <div class="grid grid-cols-3 gap-2 sm:grid-cols-6 sm:gap-3">
+          {tiles.map((img, i) => (
+            <img
+              src={withBase(img.src)}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              class:list={[
+                'aspect-square w-full rounded-lg object-cover opacity-90',
+                // Pe ecran mare prima poză ocupă 2x2: lățimea a două coloane plus spațiul
+                // dintre ele este exact înălțimea a două rânduri, deci grila rămâne aliniată.
+                i === 0 && 'sm:col-span-2 sm:row-span-2',
+                // Pe mobil arătăm doar primele șase, ca banda să nu devină un perete.
+                i >= 6 && 'hidden sm:block',
+              ]}
+            />
+          ))}
+        </div>
+      </div>
+    )
+  }
+</section>

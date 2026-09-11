@@ -1,0 +1,93 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { type Locale, useTranslations, formatDateParts, withBase } from '../i18n';
+
+/**
+ * Rând de eveniment: data mare în coloana din stânga, conținutul în dreapta.
+ * Înlocuiește cardul cu poză de dinainte — data devine ancora vizuală, iar
+ * rândurile succesive se citesc ca un calendar, nu ca o grămadă de casete.
+ *
+ * `detailed` adaugă textul complet al evenimentului (folosit pentru următorul
+ * eveniment); fără el rămâne un rând compact, pentru liste.
+ */
+interface Props {
+  event: CollectionEntry<'evenimente'>;
+  lang: Locale;
+  detailed?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { event, lang, detailed = false, headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const { Content } = await render(event);
+const Heading = headingLevel;
+const { day, month, year } = formatDateParts(event.data.date, lang);
+const iso = event.data.date.toISOString().slice(0, 10);
+---
+
+<article
+  id={`eveniment-${event.data.translationKey}`}
+  class="grid gap-x-10 gap-y-5 border-t border-stone-300 pt-6 sm:grid-cols-[9rem_1fr] sm:pt-8"
+>
+  <!-- Blocul de dată: pe mobil stă pe un rând, pe ecran mare devine coloană. -->
+  <div class="sm:text-right">
+    <time datetime={iso} class="flex items-baseline gap-2 sm:block">
+      <span class="font-serif text-4xl font-bold leading-none text-brand-700 sm:text-5xl">{day}</span>
+      <span class="text-sm font-semibold uppercase tracking-widest text-stone-500 sm:mt-2 sm:block">
+        {month}
+      </span>
+      <span class="text-sm uppercase tracking-widest text-stone-400 sm:block">{year}</span>
+    </time>
+  </div>
+
+  <div>
+    <Heading class="font-serif text-2xl font-bold leading-tight text-brand-950 sm:text-3xl">
+      {event.data.title}
+    </Heading>
+
+    {
+      event.data.location && (
+        <p class="mt-2 inline-flex items-center gap-1.5 text-sm text-stone-600">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            class="h-4 w-4 shrink-0 text-brand-600"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z" />
+            <circle cx="12" cy="10" r="2.5" />
+          </svg>
+          {event.data.location}
+        </p>
+      )
+    }
+
+    {
+      detailed && (
+        <div class="prose-md mt-4 text-stone-700">
+          <Content />
+        </div>
+      )
+    }
+
+    {
+      detailed && event.data.registrationLink && (
+        <p class="mt-5">
+          <a
+            href={event.data.registrationLink}
+            target="_blank"
+            rel="noopener"
+            class="inline-block rounded-full bg-brand-800 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
+          >
+            {t('activities.register')}
+          </a>
+        </p>
+      )
+    }
+
+    {!detailed && <slot />}
+  </div>
+</article>

@@ -154,6 +154,15 @@ const en: Partial<typeof ro> = {
   'notFound.title': 'Page not found',
   'notFound.text': 'Sorry, the page you are looking for does not exist (or has been moved).',
   'notFound.home': 'Back to the home page',
+
+  // Redesign v5: hero, invitație, galerie
+  'home.heroHeadline': 'Young Romanian Orthodox, together in Switzerland',
+  'home.heroLead': 'We meet at the patronal feast and at vigils, on mountain hikes and at Bible study — from Geneva to St. Gallen. Come join us.',
+  'home.heroPhotoAlt': 'The young people of Nepsis Switzerland with the bishop and the priests at the fraternity\'s patronal feast',
+  'home.joinTitle': 'Come join us',
+  'home.joinText': 'You do not need to know anyone beforehand. Write to us and we will see you at the next gathering.',
+  'home.joinCta': 'Become a member',
+  'home.galleryTitle': 'Moments from the life of the fraternity',
 };
 
 export default en;

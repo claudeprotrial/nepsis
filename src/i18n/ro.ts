@@ -151,4 +151,13 @@ export default {
   'notFound.title': 'Pagina nu a fost găsită',
   'notFound.text': 'Ne pare rău, pagina căutată nu există (sau a fost mutată).',
   'notFound.home': 'Înapoi la pagina principală',
+
+  // Redesign v5: hero, invitație, galerie
+  'home.heroHeadline': 'Tineri ortodocși români, împreună în Elveția',
+  'home.heroLead': 'Ne întâlnim la hram și la priveghere, în drumeții pe munte și la studiu biblic — de la Geneva la St. Gallen. Vino și tu.',
+  'home.heroPhotoAlt': 'Tinerii Nepsis Elveția împreună cu ierarhul și preoții, la hramul frăției',
+  'home.joinTitle': 'Vino și tu',
+  'home.joinText': 'Nu trebuie să cunoști pe nimeni dinainte. Scrie-ne și te așteptăm la următoarea întâlnire.',
+  'home.joinCta': 'Devino membru',
+  'home.galleryTitle': 'Momente din viața frăției',
 } as const;

@@ -155,6 +155,15 @@ const de: Partial<typeof ro> = {
   'notFound.title': 'Seite nicht gefunden',
   'notFound.text': 'Die gesuchte Seite existiert leider nicht (oder wurde verschoben).',
   'notFound.home': 'Zurück zur Startseite',
+
+  // Redesign v5: hero, invitație, galerie
+  'home.heroHeadline': 'Junge rumänische Orthodoxe, gemeinsam in der Schweiz',
+  'home.heroLead': 'Wir treffen uns am Patrozinium und zur Vigil, beim Wandern und beim Bibelkreis — von Genf bis St. Gallen. Komm auch du.',
+  'home.heroPhotoAlt': 'Die Jugendlichen von Nepsis Schweiz mit dem Bischof und den Priestern am Patrozinium der Bruderschaft',
+  'home.joinTitle': 'Komm auch du',
+  'home.joinText': 'Du musst vorher niemanden kennen. Schreib uns, und wir sehen uns beim nächsten Treffen.',
+  'home.joinCta': 'Mitglied werden',
+  'home.galleryTitle': 'Momente aus dem Leben der Bruderschaft',
 };
 
 export default de;

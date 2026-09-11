@@ -27,7 +27,7 @@ const isActive = (href: string) =>
 ---
 
 <header class="sticky top-0 z-40 border-b border-stone-200 bg-paper/95 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-2">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2">
     <a href={localePath(lang, '/')} class="flex shrink-0 items-center gap-3">
       <Image
         src={logo}
@@ -37,17 +37,17 @@ const isActive = (href: string) =>
         format="webp"
         class="h-11 w-11 rounded-full border border-stone-200 object-cover"
       />
-      <span class="font-serif text-lg font-semibold tracking-tight text-brand-900">{t('site.name')}</span>
+      <span class="whitespace-nowrap font-serif text-lg font-semibold tracking-tight text-brand-900">{t('site.name')}</span>
     </a>
 
-    <nav class="hidden items-center gap-1 lg:flex" aria-label={t('nav.menu')}>
+    <nav class="hidden items-center gap-0.5 xl:flex" aria-label={t('nav.menu')}>
       {
         items.map((item) => (
           <a
             href={localePath(lang, item.href)}
             aria-current={isActive(item.href) ? 'page' : undefined}
             class:list={[
-              'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+              'whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors',
               isActive(item.href)
                 ? 'bg-brand-100 text-brand-900'
                 : 'text-stone-700 hover:bg-brand-50 hover:text-brand-900',
@@ -59,10 +59,10 @@ const isActive = (href: string) =>
       }
     </nav>
 
-    <div class="hidden items-center gap-3 lg:flex">
+    <div class="hidden items-center gap-3 xl:flex">
       <a
         href={localePath(lang, '/devino-membru/')}
-        class="rounded-lg bg-brand-800 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
+        class="whitespace-nowrap rounded-lg bg-brand-800 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
       >
         {t('nav.join')}
       </a>
@@ -72,7 +72,7 @@ const isActive = (href: string) =>
     <button
       id="meniu-buton"
       type="button"
-      class="rounded-md border border-stone-300 p-2 text-stone-700 hover:bg-brand-50 lg:hidden"
+      class="rounded-md border border-stone-300 p-2 text-stone-700 hover:bg-brand-50 xl:hidden"
       aria-expanded="false"
       aria-controls="meniu-mobil"
       aria-label={t('nav.openMenu')}
@@ -83,7 +83,7 @@ const isActive = (href: string) =>
     </button>
   </div>
 
-  <nav id="meniu-mobil" class="hidden border-t border-stone-200 px-4 pb-4 lg:hidden" aria-label={t('nav.menu')}>
+  <nav id="meniu-mobil" class="hidden border-t border-stone-200 px-4 pb-4 xl:hidden" aria-label={t('nav.menu')}>
     <ul class="flex flex-col py-2">
       {
         items.map((item) => (

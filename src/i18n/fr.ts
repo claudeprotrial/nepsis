@@ -155,6 +155,15 @@ const fr: Partial<typeof ro> = {
   'notFound.title': 'Page introuvable',
   'notFound.text': 'Désolé, la page recherchée n’existe pas (ou a été déplacée).',
   'notFound.home': 'Retour à la page d’accueil',
+
+  // Redesign v5: hero, invitație, galerie
+  'home.heroHeadline': 'Jeunes orthodoxes roumains, ensemble en Suisse',
+  'home.heroLead': 'Nous nous retrouvons à la fête patronale et aux vigiles, en randonnée et à l\'étude biblique — de Genève à Saint-Gall. Rejoignez-nous.',
+  'home.heroPhotoAlt': 'Les jeunes de Nepsis Suisse avec l\'évêque et les prêtres, lors de la fête patronale',
+  'home.joinTitle': 'Rejoignez-nous',
+  'home.joinText': 'Pas besoin de connaître quelqu\'un à l\'avance. Écrivez-nous et nous vous attendons à la prochaine rencontre.',
+  'home.joinCta': 'Devenir membre',
+  'home.galleryTitle': 'Moments de la vie de la fraternité',
 };
 
 export default fr;

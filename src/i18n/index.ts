@@ -94,3 +94,18 @@ export function formatDate(date: Date, locale: Locale): string {
     timeZone: 'UTC',
   }).format(date);
 }
+
+/**
+ * Data descompusă în bucăți, pentru blocul de dată al evenimentelor: ziua se
+ * afișează mare, luna și anul dedesubt. Intl le dă separat, ca să nu despicăm
+ * un șir formatat (ordinea cuvintelor diferă de la o limbă la alta).
+ */
+export function formatDateParts(date: Date, locale: Locale) {
+  const loc = dateLocales[locale];
+  const opts = { timeZone: 'UTC' } as const;
+  return {
+    day: new Intl.DateTimeFormat(loc, { day: 'numeric', ...opts }).format(date),
+    month: new Intl.DateTimeFormat(loc, { month: 'long', ...opts }).format(date),
+    year: new Intl.DateTimeFormat(loc, { year: 'numeric', ...opts }).format(date),
+  };
+}

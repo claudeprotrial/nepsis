@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import EventCard from '../../components/EventCard.astro';
+import EventRow from '../../components/EventRow.astro';
 import { langStaticPaths, localeFromParam, localePath, useTranslations } from '../../i18n';
 import { getEvents, splitEvents, getOptionalPage } from '../../lib/content';
 import psalticaLogo from '../../assets/nepsis_psaltica_logo.jpg';
@@ -28,7 +29,7 @@ const CalendarContent = calendar?.Content;
 
     <!-- Următorul eveniment -->
     <section class="mt-10" aria-labelledby="urmeaza">
-      <h2 id="urmeaza" class="text-2xl font-bold uppercase tracking-wide text-brand-950">
+      <h2 id="urmeaza" class="font-serif text-2xl font-bold text-brand-950 sm:text-3xl">
         {t('activities.upcoming')}
       </h2>
       {
@@ -37,9 +38,9 @@ const CalendarContent = calendar?.Content;
             {t('activities.noUpcoming')}
           </p>
         ) : (
-          <div class="mt-6 space-y-8">
+          <div class="mt-6 max-w-4xl space-y-8">
             {upcoming.map((event, i) => (
-              <EventCard event={event} lang={lang} detailed={i === 0} headingLevel="h3" />
+              <EventRow event={event} lang={lang} detailed={i === 0} headingLevel="h3" />
             ))}
           </div>
         )
@@ -50,7 +51,7 @@ const CalendarContent = calendar?.Content;
     {
       calendar && CalendarContent && (
         <section class="mt-14" aria-labelledby="calendar-anual">
-          <h2 id="calendar-anual" class="text-2xl font-bold uppercase tracking-wide text-brand-950">
+          <h2 id="calendar-anual" class="font-serif text-2xl font-bold text-brand-950 sm:text-3xl">
             {calendar.entry.data.title}
           </h2>
           <div class="prose-md mt-6 rounded-xl border border-stone-200 bg-white p-6 text-stone-700 shadow-sm sm:p-8">
@@ -93,7 +94,7 @@ const CalendarContent = calendar?.Content;
 
     <!-- Evenimente recente: doar ultimele 3 -->
     <section class="mt-14" aria-labelledby="recente">
-      <h2 id="recente" class="text-2xl font-bold uppercase tracking-wide text-brand-950">
+      <h2 id="recente" class="font-serif text-2xl font-bold text-brand-950 sm:text-3xl">
         {t('activities.past')}
       </h2>
       <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
