@@ -7,6 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "preview:lan": "astro preview --host",
     "build:mirror": "SITE_URL=https://claudeprotrial.github.io BASE_PATH=/nepsis astro build",
     "preview:mirror": "SITE_URL=https://claudeprotrial.github.io BASE_PATH=/nepsis astro preview --port 4322"
   },
