@@ -154,6 +154,16 @@ const fr: Partial<typeof ro> = {
   'notFound.title': 'Page introuvable',
   'notFound.text': 'Désolé, la page recherchée n’existe pas (ou a été déplacée).',
   'notFound.home': 'Retour à la page d’accueil',
+
+  // v9 — cele șase vremuri ale anului frăției; textul alternativ al fotografiei de la hram
+  'vreme.acum': 'En ce moment',
+  'vreme.0': 'le temps de la fête patronale',
+  'vreme.1': 'le temps des vigiles',
+  'vreme.2': 'le temps des chemins',
+  'vreme.3': 'le temps de la montagne',
+  'vreme.4': 'le temps du retour',
+  'vreme.5': 'le temps des chants de Noël',
+  'patron.hramAlt': 'Les jeunes de Nepsis Suisse à la fête patronale, avec l’icône de saint Jean Cassien',
 };
 
 export default fr;

@@ -1,0 +1,79 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { type Locale, useTranslations, withBase } from '../i18n';
+import { dimensiuni } from '../lib/imagini';
+
+/**
+ * Un eveniment ca rând: data în coloana din stânga, conținutul în dreapta, fără
+ * casetă. Ziua e scrisă cu roșu fiindcă e timp — regula rubricii.
+ * `detailed` adaugă textul întreg, afișul și butonul de înscriere.
+ */
+interface Props {
+  event: CollectionEntry<'evenimente'>;
+  lang: Locale;
+  detailed?: boolean;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { event, lang, detailed = false, headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const { Content } = await render(event);
+const Heading = headingLevel;
+
+const regiuni: Record<Locale, string> = { ro: 'ro-RO', fr: 'fr-CH', en: 'en-GB', de: 'de-CH' };
+const formateaza = (o: Intl.DateTimeFormatOptions) =>
+  new Intl.DateTimeFormat(regiuni[lang], { timeZone: 'UTC', ...o }).format(event.data.date);
+const iso = event.data.date.toISOString().slice(0, 10);
+
+// Afișele au text în colțuri, deci stau dreptunghiulare și netăiate, la proporțiile lor.
+const afis = detailed && event.data.image ? await dimensiuni(event.data.image) : null;
+---
+
+<article
+  id={`eveniment-${event.data.translationKey}`}
+  class="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-5 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-x-10"
+>
+  <time datetime={iso} class="block">
+    <span class="block font-serif text-[2.75rem] leading-none font-light text-candela tabular-nums">
+      {formateaza({ day: 'numeric' })}
+    </span>
+    <span class="mt-2 block text-[0.8125rem] text-umbra">{formateaza({ month: 'long' })}</span>
+    <span class="block text-[0.8125rem] text-umbra tabular-nums">{formateaza({ year: 'numeric' })}</span>
+  </time>
+
+  <div class="min-w-0">
+    <Heading class="titlu-mic">{event.data.title}</Heading>
+    {event.data.location && <p class="mt-1.5 text-sm text-umbra">{event.data.location}</p>}
+
+    {
+      detailed && (
+        <div class:list={['mt-5', event.data.image && 'lg:grid lg:grid-cols-[minmax(0,1fr)_15rem] lg:gap-10']}>
+          <div class="proza">
+            <Content />
+          </div>
+          {event.data.image && (
+            <img
+              src={withBase(event.data.image)}
+              alt={event.data.imageAlt ?? event.data.title}
+              width={afis?.w}
+              height={afis?.h}
+              loading="lazy"
+              decoding="async"
+              class="mt-6 block h-auto w-full max-w-60 border border-linie lg:mt-0"
+            />
+          )}
+        </div>
+      )
+    }
+
+    {
+      detailed && event.data.registrationLink && (
+        <p class="mt-6">
+          <a href={event.data.registrationLink} target="_blank" rel="noopener" class="candela">
+            {t('activities.register')}
+          </a>
+        </p>
+      )
+    }
+  </div>
+</article>

@@ -3,8 +3,9 @@ import { Image } from 'astro:assets';
 import { type Locale, useTranslations, localePath } from '../i18n';
 import ObfuscatedEmail from './ObfuscatedEmail.astro';
 import SocialLinks from './SocialLinks.astro';
-import logo from '../assets/logo-small.jpg';
+import sigla from '../assets/sigla-tus.png';
 
+/** Subsolul e tot „lumina de zi”: fără roșu, fără rotunjiri, fără umbre. */
 interface Props {
   lang: Locale;
 }
@@ -12,42 +13,35 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+const legatura = 'text-cerneala underline decoration-linie underline-offset-4 transition-colors hover:decoration-cerneala';
 ---
 
-<footer class="mt-16 border-t border-stone-200 bg-brand-950 text-stone-300">
-  <div class="mx-auto flex max-w-3xl flex-col items-center gap-6 px-4 py-14 text-center">
-    <a href={localePath(lang, '/')} class="flex flex-col items-center gap-4">
-      <Image
-        src={logo}
-        alt=""
-        width="160"
-        height="160"
-        format="webp"
-        class="h-20 w-20 rounded-full border-2 border-white/20 object-cover shadow-md"
-        loading="lazy"
-      />
-      <span class="font-serif text-2xl font-bold uppercase tracking-wide text-white">{t('site.name')}</span>
-    </a>
-
-    <p class="max-w-md text-sm leading-relaxed text-stone-400">{t('footer.tagline')}</p>
-
-    <SocialLinks
-      showGroups={false}
-      class="justify-center gap-3 [&_a]:text-stone-400 [&_a:hover]:bg-brand-800 [&_a:hover]:text-white"
-    />
-
-    <p class="text-sm">
-      <ObfuscatedEmail class="text-brand-200 underline decoration-brand-700 underline-offset-2 hover:text-white" />
-      <span class="mx-2 text-stone-600" aria-hidden="true">·</span>
-      <a href={localePath(lang, '/newsletter/')} class="underline decoration-brand-700 underline-offset-2 hover:text-white">
-        {t('contact.newsletterLink')}
+<footer class="border-t border-linie bg-zi text-cerneala">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.3fr)_1fr_1fr]">
+    <div>
+      <a href={localePath(lang, '/')} class="inline-block">
+        <Image src={sigla} alt={t('site.name')} width={160} height={157} format="webp" loading="lazy" class="h-auto w-20" />
       </a>
-    </p>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed text-umbra">{t('footer.tagline')}</p>
+    </div>
+
+    <div>
+      <h2 class="font-sans text-sm font-medium">{t('footer.contact')}</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        <li><ObfuscatedEmail class={legatura} /></li>
+        <li>
+          <a href={localePath(lang, '/newsletter/')} class={legatura}>{t('contact.newsletterLink')}</a>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="font-sans text-sm font-medium">{t('footer.social')}</h2>
+      <SocialLinks showGroups={false} class="mt-2 -ml-2.5 gap-0.5" />
+    </div>
   </div>
 
-  <div class="border-t border-brand-900">
-    <p class="mx-auto max-w-6xl px-4 py-4 text-center text-xs text-stone-400">
-      © {year} Nepsis Elvetia. {t('footer.rights')}
-    </p>
+  <div class="border-t border-linie">
+    <p class="mx-auto max-w-7xl px-4 py-5 text-xs text-umbra">© {year} Nepsis Elvetia. {t('footer.rights')}</p>
   </div>
 </footer>

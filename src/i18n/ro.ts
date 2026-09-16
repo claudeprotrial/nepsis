@@ -150,4 +150,14 @@ export default {
   'notFound.title': 'Pagina nu a fost găsită',
   'notFound.text': 'Ne pare rău, pagina căutată nu există (sau a fost mutată).',
   'notFound.home': 'Înapoi la pagina principală',
+
+  // v9 — cele șase vremuri ale anului frăției; textul alternativ al fotografiei de la hram
+  'vreme.acum': 'Acum',
+  'vreme.0': 'vremea hramului',
+  'vreme.1': 'vremea privegherilor',
+  'vreme.2': 'vremea drumurilor',
+  'vreme.3': 'vremea muntelui',
+  'vreme.4': 'vremea întoarcerii',
+  'vreme.5': 'vremea colindelor',
+  'patron.hramAlt': 'Tinerii Nepsis Elveția la hramul frăției, cu icoana Sfântului Ioan Casian',
 } as const;

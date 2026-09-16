@@ -153,6 +153,16 @@ const en: Partial<typeof ro> = {
   'notFound.title': 'Page not found',
   'notFound.text': 'Sorry, the page you are looking for does not exist (or has been moved).',
   'notFound.home': 'Back to the home page',
+
+  // v9 — cele șase vremuri ale anului frăției; textul alternativ al fotografiei de la hram
+  'vreme.acum': 'Now',
+  'vreme.0': 'the season of the patronal feast',
+  'vreme.1': 'the season of vigils',
+  'vreme.2': 'the season of journeys',
+  'vreme.3': 'the season of the mountains',
+  'vreme.4': 'the season of return',
+  'vreme.5': 'the season of carols',
+  'patron.hramAlt': 'The young people of Nepsis Switzerland at the patronal feast, with the icon of Saint John Cassian',
 };
 
 export default en;

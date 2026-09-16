@@ -1,182 +1,300 @@
 @import 'tailwindcss';
+@import './fallback.css';
 
 /*
- * Fonturi fallback cu metrici ajustate la Cardo/Inter (calculate cu fontkit,
- * media lățimilor a–z ponderată cu frecvențele literelor): până se încarcă
- * fontul web, textul are aceleași dimensiuni — deci zero salt de layout (CLS).
+ * v9 — „Fereastra”.
+ *
+ * Două reguli, din care decurge tot restul:
+ *
+ * 1. Suprafața paginii e întotdeauna lumină. Întunericul există numai înăuntrul
+ *    fotografiilor: nicio secțiune închisă, niciun voal, niciun duoton. Un site
+ *    fără nicio suprafață întunecată nu poate ieși sumbru.
+ * 2. Roșul marchează exclusiv timpul și acțiunea — datele, vremea în care ne
+ *    aflăm, butoanele și legăturile. Regula vine din rubricile cărților de slujbă.
+ *    De aceea vârsta, rolurile și textul obișnuit rămân negre, iar antetul și
+ *    subsolul nu au roșu deloc.
+ *
+ * Planul complet: docs/superpowers/specs/2026-09-13-nepsis-v9-fereastra-design.md
  */
-@font-face {
-  font-family: 'Cardo Fallback';
-  src: local('Georgia');
-  size-adjust: 95.58%;
-  ascent-override: 103.6%;
-  descent-override: 38.06%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: 'Inter Fallback';
-  src: local('Arial');
-  size-adjust: 107.48%;
-  ascent-override: 90.14%;
-  descent-override: 22.44%;
-  line-gap-override: 0%;
-}
 
 @theme {
-  /* Tipografie: Cardo (serif) pentru titluri, Inter pentru text — ambele cu diacritice românești (latin-ext). */
-  --font-serif: 'Cardo', 'Cardo Fallback', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter Variable', 'Inter', 'Inter Fallback', Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Newsreader Variable', 'Newsreader Fallback', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Instrument Sans', 'Instrument Sans Fallback', Arial, ui-sans-serif, system-ui, sans-serif;
 
-  /* Alb + roșu, ca stema Elveției — roșul elvețian (~#d52b1e) e singura culoare de accent. */
-  --color-brand-50: #fdf3f2;
-  --color-brand-100: #fce4e2;
-  --color-brand-200: #facdc9;
-  --color-brand-300: #f5a9a2;
-  --color-brand-400: #ed766b;
-  --color-brand-500: #e04b3c;
-  --color-brand-600: #d02d1e;
-  --color-brand-700: #ae2416;
-  --color-brand-800: #902115;
-  --color-brand-900: #772017;
-  --color-brand-950: #400c06;
-
-  /* Fond alb (abia perceptibil cald, ca să existe alternanță între secțiuni). */
-  --color-paper: #fbf8f7;
-  --color-ink: #2b2827;
+  --color-lumina: #ffffff;
+  /* Alb abia răcit spre albastru, pentru antet, subsol și banda Mitropoliei: rece
+     deliberat, ca să nu poată aluneca spre bej. */
+  --color-zi: #f7f9fb;
+  /* Alb cu suflu roz — nuanța vine din roșu, nu din ocru. Doar banda „Următorul eveniment”. */
+  --color-seara: #fcf6f3;
+  /* Cinabru adânc: citește ca cerneală de rubrică, nu ca alertă. ≈ 6,5:1 pe alb. */
+  --color-candela: #b01e16;
+  /* Negru adevărat: sigla e desenată cu tuș. */
+  --color-cerneala: #000000;
+  --color-umbra: #6b6560;
+  --color-linie: #e6e1dd;
 }
 
-html {
-  scroll-behavior: smooth;
+@keyframes nepsis-lumina {
+  from {
+    transform: translateY(-38%);
+  }
+  to {
+    transform: translateY(120%);
+  }
 }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--color-paper);
-  color: var(--color-ink);
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* Titlurile folosesc serif-ul peste tot. */
-h1, h2, h3, h4 {
-  font-family: var(--font-serif);
-  text-wrap: balance;
-}
-
-/* Stiluri implicite pentru proza venită din fișierele Markdown. */
-.prose-md {
-  @apply text-base leading-relaxed;
-}
-.prose-md > * + * {
-  margin-top: 1em;
-}
-.prose-md h2 {
-  @apply mt-10 mb-3 text-2xl font-semibold text-brand-900;
-}
-.prose-md h3 {
-  @apply mt-8 mb-2 text-xl font-semibold text-brand-900;
-}
-.prose-md a {
-  @apply text-brand-700 underline decoration-brand-300 underline-offset-2 transition-colors;
-  overflow-wrap: anywhere;
-}
-.prose-md a:hover {
-  @apply text-brand-900 decoration-brand-700;
-}
-.prose-md ul {
-  @apply list-disc pl-6 space-y-1;
-}
-.prose-md ol {
-  @apply list-decimal pl-6 space-y-1;
-}
-.prose-md blockquote {
-  @apply border-l-4 border-brand-200 pl-4 italic text-stone-600;
-}
-.prose-md img {
-  @apply rounded-lg;
-  max-width: 100%;
-  height: auto;
-}
-.prose-md iframe {
-  max-width: 100%;
-}
-.prose-md table {
-  @apply w-full text-left text-sm;
-  border-collapse: collapse;
-}
-.prose-md th {
-  @apply border-b-2 border-brand-200 py-2 pr-4 font-semibold text-brand-900;
-}
-.prose-md td {
-  @apply border-b border-stone-200 py-2 pr-4 align-top;
-}
-.prose-md strong {
-  @apply font-semibold;
-}
-
-/* Tabelele late din Markdown derulează orizontal pe mobil în loc să rupă pagina. */
-.prose-md .table-scroll,
-.prose-md > astro-island {
-  overflow-x: auto;
-}
-
-/* E-mailul nu apare în HTML: e asamblat vizual din atributele data-* (anti-spam). */
-.email-protejat::after {
-  content: attr(data-x) '@' attr(data-y) '.' attr(data-z);
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-lumina);
+    color: var(--color-cerneala);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Titlurile stau în greutate 300, niciodată bold: ușurința e tonul; gravitatea
+     ar veni din bold și ar face site-ul solemn. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-candela);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
 }
 
 /*
- * Deschiderea paginii principale, în felul celei de pe ascorbucuresti.com:
- * colajul pornește vizibil mic și crește până la locul lui, iar textul urcă
- * după el, decalat. Ținem totul sub o secundă și jumătate — e o deschidere,
- * nu o introducere.
- *
- * Prima variantă scala de la 0,96 la 1 și nu se vedea deloc; de aceea pornim
- * acum de la 0,55, adică vizibil mai mic decât ținta.
- *
- * Totul stă într-un `prefers-reduced-motion: no-preference`: dacă utilizatorul
- * a cerut mai puțină mișcare, nicio regulă de aici nu se aplică și conținutul e
- * vizibil din prima — `both` ar lăsa altfel elementele invizibile.
- * Fără JavaScript: animația pornește odată cu randarea.
+ * Clasele de componentă stau în stratul `components`, ca utilitarele Tailwind de
+ * pe același element (mt-*, max-w-*) să le poată suprascrie. Scrise în afara unui
+ * strat, ar câștiga ele și ar anula în tăcere spațierea din pagini.
  */
+@layer components {
+  .titlu-mare,
+  .titlu,
+  .titlu-mic {
+    font-family: var(--font-serif);
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  .titlu-mare {
+    font-weight: 300;
+    font-size: clamp(2.75rem, 1.9rem + 3.4vw, 4rem);
+    line-height: 1.04;
+    letter-spacing: -0.012em;
+  }
+  .titlu {
+    font-weight: 300;
+    font-size: clamp(2rem, 1.55rem + 1.8vw, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.008em;
+  }
+  .titlu-mic {
+    font-weight: 400;
+    font-size: clamp(1.5rem, 1.35rem + 0.6vw, 1.875rem);
+    line-height: 1.2;
+  }
+
+  /* Rubrica: timpul, scris cu roșu în cursiva caligrafică a lui Newsreader. */
+  .rubrica {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    color: var(--color-candela);
+  }
+
+  /*
+   * Candela — acțiunea principală, cel mult una pe pagină. La hover nu se închide
+   * la culoare: se aprinde, cu un halou care se scurge în albul din jur.
+   */
+  .candela {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.125rem;
+    border-radius: 3px;
+    background-color: var(--color-candela);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 0 0 0 rgb(176 30 22 / 0);
+    transition: box-shadow 140ms ease-out;
+  }
+  .candela:hover {
+    box-shadow: 0 0 0 7px rgb(176 30 22 / 0.09);
+  }
+  .candela:active {
+    box-shadow: 0 0 0 4px rgb(176 30 22 / 0.16);
+  }
+
+  /* Acțiunea secundară: fără casetă, doar o linie roșie dedesubt, care se îngroașă. */
+  .secundar {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-cerneala);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-candela);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    white-space: nowrap;
+  }
+  .secundar:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /*
+   * Arcul — fereastra de biserică, singura abatere de la dreptunghi din site.
+   * Forma exactă (proporțiile și raza) o calculează Arc.astro din dimensiunile
+   * fotografiei; aici e doar decupajul. `isolation` împiedică Safari să lase
+   * voalul animat să iasă peste colțurile rotunjite.
+   */
+  .arc {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background-color: var(--color-zi);
+  }
+  .arc > img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /*
+   * „Se face lumină în fereastră”: albul paginii acoperă arcul și se retrage în
+   * jos, cu marginea difuză. În repaus voalul stă sub cadru, ascuns de
+   * `overflow: hidden` — deci fără animație fotografia e vizibilă din prima.
+   */
+  .arc--lumina::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 260%;
+    background: linear-gradient(to bottom, rgb(255 255 255 / 0) 0%, #fff 35%, #fff 100%);
+    transform: translateY(120%);
+    pointer-events: none;
+  }
+
+  /* Proza din Markdown. */
+  .proza {
+    max-width: 62ch;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+  .proza > * + * {
+    margin-top: 1em;
+  }
+  .proza h2 {
+    margin-top: 2em;
+    font-size: 1.875rem;
+    line-height: 1.2;
+  }
+  .proza h3 {
+    margin-top: 1.6em;
+    font-size: 1.375rem;
+    font-weight: 400;
+    line-height: 1.3;
+  }
+  .proza a {
+    color: var(--color-cerneala);
+    text-decoration-line: underline;
+    text-decoration-color: var(--color-candela);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.22em;
+    overflow-wrap: anywhere;
+  }
+  .proza a:hover {
+    text-decoration-thickness: 2px;
+  }
+  .proza strong {
+    font-weight: 600;
+  }
+  .proza ul {
+    list-style: disc;
+    padding-left: 1.25em;
+  }
+  .proza ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+  .proza li + li {
+    margin-top: 0.35em;
+  }
+  .proza blockquote {
+    border-left: 2px solid var(--color-linie);
+    padding-left: 1em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1875rem;
+    color: var(--color-umbra);
+  }
+  .proza img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+  .proza iframe {
+    max-width: 100%;
+  }
+  /* Tabelele late derulează în propriul cadru, nu împing pagina lateral. */
+  .proza table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  .proza th {
+    text-align: left;
+    font-weight: 500;
+    padding: 0.55em 1.2em 0.55em 0;
+    border-bottom: 1px solid var(--color-cerneala);
+    vertical-align: bottom;
+  }
+  .proza td {
+    padding: 0.55em 1.2em 0.55em 0;
+    border-bottom: 1px solid var(--color-linie);
+    vertical-align: top;
+  }
+  .proza-lata {
+    max-width: none;
+  }
+
+  /* E-mailul nu apare în HTML: e asamblat vizual din atributele data-* (anti-spam). */
+  .email-protejat::after {
+    content: attr(data-x) '@' attr(data-y) '.' attr(data-z);
+  }
+}
+
+/* Singura mișcare netriggerată din tot site-ul, și numai pentru cine n-a cerut mai puțină. */
 @media (prefers-reduced-motion: no-preference) {
-  @keyframes nepsis-creste {
-    0% {
-      opacity: 0;
-      transform: scale(0.55);
-    }
-    55% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
+  .arc--lumina::after {
+    animation: nepsis-lumina 1100ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
   }
-
-  @keyframes nepsis-urca {
-    from {
-      opacity: 0;
-      transform: translateY(0.85rem);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Colajul: crește din centru până la locul lui. */
-  .creste {
-    animation: nepsis-creste 950ms cubic-bezier(0.16, 0.84, 0.28, 1) both;
-    transform-origin: center;
-    will-change: transform, opacity;
-  }
-
-  .urca {
-    animation: nepsis-urca 620ms cubic-bezier(0.22, 0.68, 0.3, 1) both;
-  }
-
-  .urca-1 { animation-delay: 280ms; }
-  .urca-2 { animation-delay: 430ms; }
-  .urca-3 { animation-delay: 560ms; }
 }

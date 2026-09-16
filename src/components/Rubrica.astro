@@ -1,0 +1,28 @@
+---
+import { type Locale, type UIKey, useTranslations } from '../i18n';
+import { VREMI, indiceVreme } from '../lib/vremi';
+
+/** Rubrica timpului: „Acum: vremea …” — roșul marchează aici literal anul frăției. */
+interface Props {
+  lang: Locale;
+  class?: string;
+}
+
+const { lang, class: extra = '' } = Astro.props;
+const t = useTranslations(lang);
+const nume = Array.from({ length: VREMI }, (_, i) => t(`vreme.${i}` as UIKey));
+---
+
+<p class:list={['rubrica', extra]}>
+  {t('vreme.acum')}: <span data-vremi={JSON.stringify(nume)}>{nume[indiceVreme(new Date())]}</span>
+</p>
+
+<script>
+  // Site-ul e static și se reconstruiește doar la publicare, deci vremea scrisă la
+  // build poate rămâne în urmă. O recalculăm din data celui care vizitează.
+  document.querySelectorAll<HTMLElement>('[data-vremi]').forEach((el) => {
+    const nume = JSON.parse(el.dataset.vremi ?? '[]') as string[];
+    const actuala = nume[Math.floor(new Date().getMonth() / 2)];
+    if (actuala) el.textContent = actuala;
+  });
+</script>

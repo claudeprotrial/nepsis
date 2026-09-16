@@ -154,6 +154,16 @@ const de: Partial<typeof ro> = {
   'notFound.title': 'Seite nicht gefunden',
   'notFound.text': 'Die gesuchte Seite existiert leider nicht (oder wurde verschoben).',
   'notFound.home': 'Zurück zur Startseite',
+
+  // v9 — cele șase vremuri ale anului frăției; textul alternativ al fotografiei de la hram
+  'vreme.acum': 'Jetzt',
+  'vreme.0': 'die Zeit des Patroziniums',
+  'vreme.1': 'die Zeit der Vigilien',
+  'vreme.2': 'die Zeit der Wege',
+  'vreme.3': 'die Zeit der Berge',
+  'vreme.4': 'die Zeit der Rückkehr',
+  'vreme.5': 'die Zeit der Weihnachtslieder',
+  'patron.hramAlt': 'Die Jugendlichen von Nepsis Schweiz am Patrozinium, mit der Ikone des heiligen Johannes Cassian',
 };
 
 export default de;

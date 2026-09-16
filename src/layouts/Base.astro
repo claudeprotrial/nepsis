@@ -1,7 +1,13 @@
 ---
-import '@fontsource-variable/inter';
-import '@fontsource/cardo/400.css';
-import '@fontsource/cardo/700.css';
+// Newsreader: titluri și cursiva rubricii — italicul ei e caligrafic, singurul
+// comportament tipografic care rimează cu sigla desenată de mână. Axa optică dă un
+// desen fin la 64px și o literă robustă la 17px, din același fișier.
+import '@fontsource-variable/newsreader/standard.css';
+import '@fontsource-variable/newsreader/standard-italic.css';
+// Instrument Sans: textul curent și interfața.
+import '@fontsource/instrument-sans/400.css';
+import '@fontsource/instrument-sans/500.css';
+import '@fontsource/instrument-sans/600.css';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -58,10 +64,10 @@ const ogLocales: Record<Locale, string> = { ro: 'ro_RO', fr: 'fr_CH', en: 'en_GB
     <meta property="og:url" content={canonical.href} />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
-  <body class="flex min-h-screen flex-col">
+  <body class="flex min-h-screen flex-col bg-lumina text-cerneala">
     <a
       href="#continut"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:rounded focus:bg-brand-900 focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-50 focus:bg-cerneala focus:px-4 focus:py-2 focus:text-lumina"
     >
       {t('nav.skipToContent')}
     </a>

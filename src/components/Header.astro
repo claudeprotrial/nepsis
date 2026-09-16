@@ -2,8 +2,12 @@
 import { Image } from 'astro:assets';
 import { type Locale, useTranslations, localePath, stripLocale } from '../i18n';
 import LangSwitcher from './LangSwitcher.astro';
-import logo from '../assets/logo-small.jpg';
+import sigla from '../assets/sigla-tus.png';
 
+/**
+ * Antetul e „lumina de zi”: fără roșu. Sigla stă la proporțiile ei reale, pe fond
+ * transparent — decupajul rotund de dinainte mutila un desen făcut de mână.
+ */
 interface Props {
   lang: Locale;
 }
@@ -23,33 +27,26 @@ const items = [
 ];
 
 /*
- * Lățimea de care are nevoie meniul orizontal diferă mult de la o limbă la alta —
- * măsurat pe pagina de contact, cu etichetele nerupte: ro 1142px, fr 1236px,
- * de 1365px („Byzantinischer Gesang”, „Veranstaltungen”). Un prag unic ori taie
- * româna prea devreme, ori lasă germana să se reverse peste selectorul de limbă.
- * De aceea germana primește pragul următor. Clasele se scriu întregi, nu
- * compuse din bucăți, altfel Tailwind nu le-ar genera.
+ * Lățimea de care are nevoie meniul orizontal diferă mult de la o limbă la alta:
+ * etichetele germane („Byzantinischer Gesang”, „Veranstaltungen”) sunt mult mai
+ * lungi. Un prag unic ori taie româna prea devreme, ori lasă germana să se reverse
+ * peste selectorul de limbă, deci germana primește pragul următor. Clasele se scriu
+ * întregi, nu compuse din bucăți, altfel Tailwind nu le-ar genera.
+ * Dacă se adaugă rubrici în meniu, pragurile trebuie remăsurate.
  */
-const navDesktop = lang === 'de' ? 'hidden items-center gap-0.5 2xl:flex' : 'hidden items-center gap-0.5 xl:flex';
-const actiuniDesktop = lang === 'de' ? 'hidden items-center gap-3 2xl:flex' : 'hidden items-center gap-3 xl:flex';
+const navDesktop = lang === 'de' ? 'hidden items-center gap-5 2xl:flex' : 'hidden items-center gap-5 xl:flex';
+const actiuniDesktop = lang === 'de' ? 'hidden items-center gap-5 2xl:flex' : 'hidden items-center gap-5 xl:flex';
 const doarMobil = lang === 'de' ? '2xl:hidden' : 'xl:hidden';
 
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href.replace(/\/$/, ''));
 ---
 
-<header class="sticky top-0 z-40 border-b border-stone-200 bg-paper/95 backdrop-blur">
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2">
+<header class="sticky top-0 z-40 border-b border-linie bg-zi/95 backdrop-blur-sm">
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
     <a href={localePath(lang, '/')} class="flex shrink-0 items-center gap-3">
-      <Image
-        src={logo}
-        alt="Nepsis Elveția"
-        width="88"
-        height="88"
-        format="webp"
-        class="h-11 w-11 rounded-full border border-stone-200 object-cover"
-      />
-      <span class="font-serif text-lg font-semibold tracking-tight text-brand-900">{t('site.name')}</span>
+      <Image src={sigla} alt="" width={58} height={57} format="webp" class="h-7 w-auto" />
+      <span class="font-serif text-xl text-cerneala">{t('site.name')}</span>
     </a>
 
     <nav class={navDesktop} aria-label={t('nav.menu')}>
@@ -59,10 +56,10 @@ const isActive = (href: string) =>
             href={localePath(lang, item.href)}
             aria-current={isActive(item.href) ? 'page' : undefined}
             class:list={[
-              'whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors',
+              'py-2 text-sm whitespace-nowrap underline-offset-[6px] transition-colors',
               isActive(item.href)
-                ? 'bg-brand-100 text-brand-900'
-                : 'text-stone-700 hover:bg-brand-50 hover:text-brand-900',
+                ? 'text-cerneala underline decoration-cerneala'
+                : 'text-umbra hover:text-cerneala',
             ]}
           >
             {item.label}
@@ -74,7 +71,7 @@ const isActive = (href: string) =>
     <div class={actiuniDesktop}>
       <a
         href={localePath(lang, '/devino-membru/')}
-        class="whitespace-nowrap rounded-lg bg-brand-800 px-3.5 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
+        class="rounded-[3px] border border-cerneala px-3.5 py-2 text-sm font-medium whitespace-nowrap text-cerneala transition-colors hover:bg-cerneala hover:text-lumina"
       >
         {t('nav.join')}
       </a>
@@ -84,18 +81,26 @@ const isActive = (href: string) =>
     <button
       id="meniu-buton"
       type="button"
-      class:list={["rounded-md border border-stone-300 p-2 text-stone-700 hover:bg-brand-50", doarMobil]}
+      class:list={['p-2 text-cerneala', doarMobil]}
       aria-expanded="false"
       aria-controls="meniu-mobil"
       aria-label={t('nav.openMenu')}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"></path>
       </svg>
     </button>
   </div>
 
-  <nav id="meniu-mobil" class:list={["hidden border-t border-stone-200 px-4 pb-4", doarMobil]} aria-label={t('nav.menu')}>
+  <nav id="meniu-mobil" class:list={['hidden border-t border-linie px-4 pb-5', doarMobil]} aria-label={t('nav.menu')}>
     <ul class="flex flex-col py-2">
       {
         items.map((item) => (
@@ -104,10 +109,8 @@ const isActive = (href: string) =>
               href={localePath(lang, item.href)}
               aria-current={isActive(item.href) ? 'page' : undefined}
               class:list={[
-                'block rounded-md px-3 py-2.5 text-base font-medium',
-                isActive(item.href)
-                  ? 'bg-brand-100 text-brand-900'
-                  : 'text-stone-700 hover:bg-brand-50 hover:text-brand-900',
+                'block py-3 text-base underline-offset-[6px]',
+                isActive(item.href) ? 'text-cerneala underline decoration-cerneala' : 'text-umbra',
               ]}
             >
               {item.label}
@@ -118,11 +121,11 @@ const isActive = (href: string) =>
     </ul>
     <a
       href={localePath(lang, '/devino-membru/')}
-      class="mb-3 block rounded-lg bg-brand-800 px-3.5 py-2.5 text-center text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
+      class="mb-4 block rounded-[3px] border border-cerneala px-4 py-3 text-center text-base font-medium text-cerneala"
     >
       {t('nav.join')}
     </a>
-    <div class="border-t border-stone-200 pt-3">
+    <div class="border-t border-linie pt-4">
       <LangSwitcher lang={lang} />
     </div>
   </nav>

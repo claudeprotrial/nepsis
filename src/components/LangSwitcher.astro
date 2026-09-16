@@ -13,7 +13,7 @@ const path = rawPath.startsWith('/404') ? '/' : rawPath;
 const names: Record<Locale, string> = { ro: 'Română', fr: 'Français', en: 'English', de: 'Deutsch' };
 ---
 
-<nav aria-label={t('nav.language')} class="flex items-center gap-1 text-sm">
+<nav aria-label={t('nav.language')} class="flex items-center gap-3 text-[0.8125rem]">
   {
     locales.map((l) => (
       <a
@@ -23,10 +23,10 @@ const names: Record<Locale, string> = { ro: 'Română', fr: 'Français', en: 'En
         aria-current={l === lang ? 'true' : undefined}
         title={names[l]}
         class:list={[
-          'rounded px-2 py-1 font-medium uppercase tracking-wide transition-colors',
+          'py-1 uppercase transition-colors',
           l === lang
-            ? 'bg-brand-800 text-white'
-            : 'text-stone-500 hover:bg-brand-50 hover:text-brand-900',
+            ? 'text-cerneala underline decoration-cerneala underline-offset-[5px]'
+            : 'text-umbra hover:text-cerneala',
         ]}
       >
         {l}

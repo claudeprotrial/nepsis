@@ -12,26 +12,16 @@ const t = useTranslations(lang);
 const { entry, Content } = await getPage('devino-membru', lang);
 ---
 
-<Base
-  lang={lang}
-  title={`${t('join.title')} · ${t('site.name')}`}
-  description={entry.data.description ?? t('join.description')}
->
-  <div class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-    <h1 class="font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{entry.data.title}</h1>
-    <div class="prose-md mt-8 text-stone-700">
+<Base lang={lang} title={`${t('join.title')} · ${t('site.name')}`} description={entry.data.description ?? t('join.description')}>
+  <div class="mx-auto max-w-7xl px-4 py-12 md:py-16">
+    <h1 class="titlu-mare max-w-[44rem]">{entry.data.title}</h1>
+    <div class="proza mt-10">
       <Content />
     </div>
-    <p class="mt-10">
+    <p class="mt-12">
       <!-- Butonul asamblează adresa la click — nu există „mailto:” în clar în HTML. -->
-      <a
-        href="#"
-        class="email-protejat-buton inline-block rounded-lg bg-brand-800 px-6 py-3 text-base font-semibold text-white shadow-sm transition-colors hover:bg-brand-700"
-        data-x="nepsis.ch"
-        data-y="mitropolia"
-        data-z="eu"
-      >
-        {t('join.cta')} →
+      <a href="#" class="email-protejat-buton candela" data-x="nepsis.ch" data-y="mitropolia" data-z="eu">
+        {t('join.cta')}
       </a>
     </p>
   </div>

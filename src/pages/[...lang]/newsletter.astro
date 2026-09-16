@@ -14,27 +14,17 @@ const formUrl =
 ---
 
 <Base lang={lang} title={`${t('newsletter.title')} · ${t('site.name')}`} description={t('newsletter.description')}>
-  <div class="mx-auto max-w-3xl px-4 py-10 sm:py-14">
-    <h1 class="font-serif text-3xl font-bold text-brand-950 sm:text-4xl">{t('newsletter.heading')}</h1>
-    <p class="mt-3 max-w-prose text-lg text-stone-600">{t('newsletter.text')}</p>
+  <div class="mx-auto max-w-7xl px-4 py-12 md:py-16">
+    <h1 class="titlu-mare max-w-[44rem]">{t('newsletter.heading')}</h1>
+    <p class="mt-5 max-w-[62ch]">{t('newsletter.text')}</p>
 
-    <div class="mt-8 overflow-hidden rounded-xl border border-stone-200 bg-white shadow-sm">
-      <iframe
-        src={`${formUrl}?embedded=true`}
-        width="100%"
-        height="800"
-        loading="lazy"
-        title={t('newsletter.heading')}></iframe>
+    <div class="mt-10 max-w-3xl border border-linie bg-lumina">
+      <iframe src={`${formUrl}?embedded=true`} width="100%" height="800" loading="lazy" title={t('newsletter.heading')}></iframe>
     </div>
 
-    <p class="mt-6 text-stone-600">
+    <p class="mt-6 max-w-[62ch] text-umbra">
       {t('newsletter.fallback')}
-      <a
-        href={formUrl}
-        target="_blank"
-        rel="noopener"
-        class="font-semibold text-brand-700 underline decoration-brand-300 underline-offset-4 hover:text-brand-900"
-      >
+      <a href={formUrl} target="_blank" rel="noopener" class="text-cerneala underline decoration-candela underline-offset-[6px] hover:decoration-2">
         {t('newsletter.openForm')}
       </a>
     </p>
